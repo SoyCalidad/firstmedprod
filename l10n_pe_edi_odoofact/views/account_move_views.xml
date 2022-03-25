@@ -49,9 +49,9 @@
                     attrs="{'invisible': ['|',('move_type', 'not in', ('out_invoice', 'out_refund')),('l10n_pe_edi_is_einvoice','=',False)],'required': [('move_type', 'in', ('out_invoice', 'out_refund')),('l10n_pe_edi_is_einvoice','=',True)], 'readonly': [('state', '!=', 'draft')]}"
                     domain="[('internal_type','in',('invoice','credit_note','debit_note'))]" readonly="True" force_save="True"/>
                     
-                <field name="physician_id" domain="[('is_physician','=',True)-]" context="{'search_default_is_physician':1, 'default_is_physician':1}"/>
+                <field name="physician_id" domain="[('is_physician','=',True)]" context="{'search_default_is_physician':1, 'default_is_physician':1}"/>
                 <field name="comment"/>
-                
+
                 <field name="l10n_pe_edi_reversal_type_id" attrs="{'invisible': [('l10n_pe_edi_internal_type','!=','credit_note')]}"/>
                 <field name="l10n_pe_edi_debit_type_id" attrs="{'invisible': [('l10n_pe_edi_internal_type','!=','debit_note')]}"/>
                 <field name="l10n_pe_edi_cancel_reason" attrs="{'invisible': [('l10n_pe_edi_internal_type','!=','credit_note')]}"/>
