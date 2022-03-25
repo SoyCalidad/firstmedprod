@@ -173,6 +173,26 @@
                         <div t-attf-class="#{'col-8' if report_type != 'html' else 'col-12 col-sm-8'} col-auto mb-2">
                             <div class="card mb-2">
                                 <div class="card-body">
+                                    <dl class="row mb-0" t-if="o.comment">
+                                        <dt class="col-auto col-5 col-sm-5 mb-0">
+                                            OBSERVACION: 
+                                        </dt>
+                                        <dd class="col-auto col-7 col-sm-7 mb-0" t-esc="o.comment"/>
+                                    </dl>
+                                    <dl class="row mb-0" t-if="o.physician_id">
+                                        <dt class="col-auto col-5 col-sm-5 mb-0">
+                                            RECETADO POR: DR. 
+                                        </dt>
+                                        <dd class="col-auto col-7 col-sm-7 mb-0" t-esc="o.physician_id"/>
+                                    </dl>
+                                    <dl class="row mb-0" t-if="o.invoice_user_id">
+                                        <dt class="col-auto col-5 col-sm-5 mb-0">
+                                            VENDEDOR:  
+                                        </dt>
+                                        <dd class="col-auto col-7 col-sm-7 mb-0" t-esc="o.invoice_user_id"/>
+                                    </dl>
+                                </div>
+                                <div class="card-body">
                                     <dl class="row mb-0" t-if="o.l10n_pe_edi_service_order">
                                         <dt class="col-5 col-sm-5 mb-0">
                                             PURCHASE/SERVICE ORDER:
@@ -200,6 +220,12 @@
                                             METHOD OF PAYMENT:
                                         </dt>
                                         <dd class="col-auto col-7 col-sm-7 mb-0" t-esc="o.l10n_pe_edi_is_sale_credit and '[CRÉDITO POR PAGAR]' or '[CONTADO]'"/>
+                                    </dl>
+                                    <dl class="row mb-0" t-if="o.physician_id">
+                                        <dt class="col-auto col-5 col-sm-5 mb-0">
+                                            RECETADO POR: DR. 
+                                        </dt>
+                                        <dd class="col-auto col-7 col-sm-7 mb-0" t-esc="o.physician_id"/>
                                     </dl>
                                     <dl class="row mb-0" t-if="o.narration">
                                         <dt class="col-auto col-5 col-sm-5 mb-0">

@@ -97,6 +97,10 @@ class AccountMove(models.Model):
     l10n_pe_edi_amount_others = fields.Monetary(string='Other charges', compute='_compute_edi_amount', compute_sudo=True, tracking=True)  
     l10n_pe_edi_is_einvoice = fields.Boolean('Is E-invoice', related='journal_id.l10n_pe_edi_is_einvoice', store=True)
 
+    # Medical information
+    physician_id = fields.Many2one('res.partner', string='Médico', select=True)
+    comment = fields.Text(string='Comments')
+
     @api.onchange('partner_id')
     def _onchange_partner_id(self):
         if self.company_id.country_id.code == 'PE' and self.partner_id.country_id and self.partner_id.country_id.code != 'PE':

@@ -29,7 +29,8 @@
         'l10n_pe', 
         'l10n_latam_base', 
         'l10n_latam_invoice_document',
-        'l10n_pe_edi_catalog'
+        'l10n_pe_edi_catalog',
+        'medical_lab_management'
     ],
     'data': [
         'wizard/account_move_reversal_view.xml',
