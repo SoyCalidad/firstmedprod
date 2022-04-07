@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="res_users_view_form">
+      <field name="name">res.users.form.view</field>
+      <field name="model">res.users</field>
+      <field name="inherit_id" ref="base.view_users_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='login']" position="after">
+          <field name="token" invisible="1"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
