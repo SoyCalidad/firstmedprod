@@ -110,7 +110,7 @@ class OdooController(http.Controller):
 			# 'customer_count': 1,
 			# 'operation_code': post['operation_code'],
 			# 'payment_code': post['payment_code'],
-			'observation': post['observation'],
+			# 'observation': post['observation'],
 			'note': '',
 			# 'elimination_reason': False,
 		}]
