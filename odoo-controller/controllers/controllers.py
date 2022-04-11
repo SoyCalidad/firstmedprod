@@ -41,11 +41,16 @@ class OdooController(http.Controller):
 
 	def get_client(self, client):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
+		identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
+		name = ''
+		if identification_type.l10n_pe_vat_code == '1':
+			name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
 		if not client1:
 			client1 = request.env['res.partner'].sudo().create({
 				'lang': 'es_PE',
+				'name': name,
 				'vat': client['code'],
-				'l10n_latam_identification_type_id': request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1).id
+				'l10n_latam_identification_type_id': identification_type.id
 			})
 
 		return client1
