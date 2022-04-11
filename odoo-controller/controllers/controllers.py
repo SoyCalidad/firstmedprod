@@ -75,7 +75,7 @@ class OdooController(http.Controller):
 				'product_uom_qty': l['qty'],
 				'price_unit': l['price_unit'],
 				'product_id': product.id,
-				'tax_ids': [[6, False, [tax.id]]],
+				'tax_id': [[6, False, [tax.id]]],
 			}])
 			
 		return order_lines
