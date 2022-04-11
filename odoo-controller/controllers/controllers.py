@@ -117,7 +117,7 @@ class OdooController(http.Controller):
 		# payments = self.get_payments(post['payments'], session)
 		# data[0]['data']['statement_ids'] = payments
 		# session.sudo().write({'sequence_number': session.sequence_number + 1})
-		request.env['sale.order'].sudo(user=post['user']).create(data)
+		request.env['sale.order'].sudo().create(data)
 		# order = request.env['pos.order'].sudo().browse(order[0])
 		# request.env['pos.order'].sudo().send_invoice_mail(
 		# 	order.invoice_id.id, order.partner_id.email)
