@@ -78,7 +78,7 @@ class OdooController(http.Controller):
 	@token_protected
 	@http.route('/api/saleRegister', auth='public', type='json', cors='*')
 	def create_sale_order(self, **post):
-		return "Hello, world!"
+		# return "Hello, world!"
 		client = self.get_client(post['client'])
 		lines = self.get_prepare_lines(post['lines'], post['user'])
 		data = [{
