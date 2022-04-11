@@ -93,7 +93,7 @@ class OdooController(http.Controller):
 			# 'amount_total': post['amount_total'],
 			# 'amount_tax': post['amount_tax'],
 			# 'amount_return': 0,
-			'lines': lines,
+			'order_line': lines,
 			# 'statement_ids': [],
 			# 'pos_session_id': session.id,
 			# 'pricelist_id': session.config_id.pricelist_id.id,
