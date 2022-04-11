@@ -43,6 +43,7 @@ class OdooController(http.Controller):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
 		if not client1:
 			client1 = request.env['res.partner'].sudo().create({
+				'lang': 'es_PE',
 				'vat': client['code'],
 				'l10n_latam_identification_type_id': request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1).id
 			})
