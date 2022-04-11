@@ -14,7 +14,7 @@ from odoo import api, fields, models, _
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    physician_id = fields.Many2one('res.partner', string='Médico', select=True)
+    # physician_id = fields.Many2one('res.partner', string='Médico', select=True)
 
     def _create_invoices(self, grouped=False, final=False, date=None):
         res = super(SaleOrder, self)._create_invoices(grouped, final, date)
