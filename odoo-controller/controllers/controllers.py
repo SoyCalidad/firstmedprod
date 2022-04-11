@@ -101,7 +101,7 @@ class OdooController(http.Controller):
 			'user_id': post['user'],
 			# 'uid': order_uid,
 			# 'sequence_number': session.sequence_number,
-			'creation_date': datetime.today(),
+			# 'creation_date': datetime.today(),
 			'date_order': datetime.today(),
 			# 'fiscal_position_id': False,
 			# 'table_id': False,
