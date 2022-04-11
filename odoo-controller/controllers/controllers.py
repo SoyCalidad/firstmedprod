@@ -86,7 +86,7 @@ class OdooController(http.Controller):
 	def create_sale_order(self, **post):
 		# return "Hello, world!"
 		client = self.get_client(post['client'])
-		lines = self.get_prepare_lines(post['lines'], post['user'])
+		lines = self.get_prepare_lines(post['lines'])
 		data = [{
 			# 'name': 'Pedido{}'.format(order_uid),
 			# 'amount_paid': post['amount_total'],
