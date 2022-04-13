@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base', 'sale_coupon', 'medical_lab_management'],
 
     # always loaded
     'data': [

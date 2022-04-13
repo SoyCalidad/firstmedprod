@@ -11,6 +11,7 @@
                     <group>
                         <field name="is_patient"/>
                         <field name="is_physician"/>
+                        <field name="code" attrs="{'invisible': [('is_physician', '=', False)]}"/>
                         <field name="speciality"  attrs="{'invisible': [('is_physician', '=', False)]}"/>
                         <field name="hospital"  attrs="{'invisible': [('is_physician', '=', False)]}"/>
                     </group>

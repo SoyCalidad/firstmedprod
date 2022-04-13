@@ -1,17 +1,30 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
+	<data>
+		<!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="res_users_view_form">
-      <field name="name">res.users.form.view</field>
-      <field name="model">res.users</field>
-      <field name="inherit_id" ref="base.view_users_form" />
-      <field name="arch" type="xml">
-        <xpath expr="//field[@name='login']" position="after">
-          <field name="token" invisible="1"/>
-        </xpath>
-      </field>
-    </record>
+		<record model="ir.ui.view" id="res_users_view_form">
+			<field name="name">res.users.form.view</field>
+			<field name="model">res.users</field>
+			<field name="inherit_id" ref="base.view_users_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='login']" position="after">
+					<field name="token" invisible="1"/>
+				</xpath>
+			</field>
+		</record>
 
-  </data>
+		<record id="sale_order_view_form" model="ir.ui.view">
+			<field name="name">sale.order.form.inherit.controller</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form" />
+			<field name="priority">10</field>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='partner_id']" position="after">
+					<field name="coupon_id" invisible="0"/>
+					<field name="physician_id" domain="[('is_physician','=',True)]" context="{'search_default_is_physician':1, 'default_is_physician':1}"/>
+				</xpath>
+			</field>
+		</record>
+
+	</data>
 </odoo>

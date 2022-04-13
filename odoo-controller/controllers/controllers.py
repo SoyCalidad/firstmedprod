@@ -42,7 +42,7 @@ class OdooController(http.Controller):
 	def get_client(self, client):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
 		identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
-		name = ''
+		name = client['name']
 		if identification_type.l10n_pe_vat_code == '1':
 			name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
 		if not client1:
@@ -87,6 +87,8 @@ class OdooController(http.Controller):
 		# return "Hello, world!"
 		client = self.get_client(post['client'])
 		lines = self.get_prepare_lines(post['lines'])
+		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
+		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
 		data = [{
 			# 'name': 'Pedido{}'.format(order_uid),
 			# 'amount_paid': post['amount_total'],
@@ -113,6 +115,8 @@ class OdooController(http.Controller):
 			# 'observation': post['observation'],
 			'note': '',
 			# 'elimination_reason': False,
+			'physician_id': medico.id,
+			'coupon_id': coupon.id,
 		}]
 		# payments = self.get_payments(post['payments'], session)
 		# data[0]['data']['statement_ids'] = payments
