@@ -34,15 +34,17 @@ class StockMove(models.Model):
 
 	def _action_done(self, cancel_backorder=False):
 		res = super(StockMove, self)._action_done(cancel_backorder)
-		location = self.location_id or self.location_dest_id or False
 		_logger.info("Print ---------------->")
 		_logger.info(location)
-		data = {
-			'producto': self.product_id.name,
-			'almacen-ubicacion': location.name if location else False,
-			'tipo': self.picking_type_id.name if self.picking_type_id else False,
-			'stock': self.quantity_done,
-			'fecha_modificacion': self.write_date
-		}
-		requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
+		for r in self:
+			location = r.location_id or r.location_dest_id or False
+			data = {
+				'id_producto': r.product_id.id,
+				'producto': r.product_id.name,
+				'almacen-ubicacion': location.name if location else False,
+				'tipo': r.picking_type_id.name if r.picking_type_id else False,
+				'stock': r.quantity_done,
+				'fecha_modificacion': r.write_date
+			}
+			requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
 		return res
