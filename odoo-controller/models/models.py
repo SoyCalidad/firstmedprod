@@ -37,7 +37,7 @@ class StockMove(models.Model):
 		res = super(StockMove, self)._action_done(cancel_backorder)
 		_logger.info("Print ---------------->")
 		for r in self:
-			location = r.location_id or r.location_dest_id or False
+			location = r.location_dest_id or r.location_id  or False
 			_logger.info(location)
 			data = {
 				'id_producto': r.product_id.id,
