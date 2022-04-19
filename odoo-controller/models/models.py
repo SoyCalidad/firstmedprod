@@ -54,5 +54,6 @@ class StockMove(models.Model):
 				'consumo': r.quantity_done,
 				'fecha_modificacion': r.write_date - timedelta(hours=5),
 			}
+			_logger.info(data)
 			requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
 		return res
