@@ -37,23 +37,26 @@ class StockMove(models.Model):
 		res = super(StockMove, self)._action_done(cancel_backorder)
 		_logger.info("Print ---------------->")
 		for r in self:
-			location = r.location_dest_id or r.location_id  or False
-			pick = r.picking_id
-			if pick:
-				if pick.picking_type_code in ('incoming', 'internal'):
-					location = r.location_dest_id
-				else:
-					location = r.location_id
-			_logger.info(location)
-			data = {
-				'id_producto': r.product_id.id,
-				'producto': r.product_id.name,
-				'almacen-ubicacion': location.complete_name if location else False,
-				'tipo': r.picking_type_id.name if r.picking_type_id else 'Ajuste de inventario',
-				'stock': self.env['stock.quant'].search([('location_id','=',location.id),('product_id','=',r.product_id.id)]).quantity,
-				'consumo': r.quantity_done,
-				'fecha_modificacion': r.write_date - timedelta(hours=5),
-			}
-			_logger.info(data)
-			requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
+			# location = r.location_dest_id or r.location_id  or False
+			# pick = r.picking_id
+			# if pick:
+			# 	if pick.picking_type_code in ('incoming', 'internal'):
+			# 		location = r.location_dest_id
+			# 	else:
+			# 		location = r.location_id
+			# _logger.info(location)
+			locations = [r.location_dest_id, r.location_id]
+			for location in locations:
+				if location.usage == 'internal':
+					data = {
+						'id_producto': r.product_id.id,
+						'producto': r.product_id.name,
+						'almacen-ubicacion': location.complete_name if location else False,
+						'tipo': r.picking_type_id.name if r.picking_type_id else 'Ajuste de inventario',
+						'stock': self.env['stock.quant'].search([('location_id','=',location.id),('product_id','=',r.product_id.id)]).quantity,
+						'consumo': r.quantity_done,
+						'fecha_modificacion': r.write_date - timedelta(hours=5),
+					}
+					_logger.info(data)
+					requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
 		return res
