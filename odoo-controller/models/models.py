@@ -60,3 +60,18 @@ class StockMove(models.Model):
 					_logger.info(data)
 					requests.post('https://bitrixdemo.site/odoo/productos.php', data=data)
 		return res
+
+
+class SaleOrder(models.Model):
+	_inherit = "sale.order"
+
+	def action_confirm(self):
+		res = super(SaleOrder, self).action_confirm()
+		for order in self:
+			data = {
+				'id_venta': order.id,
+				'correlativo': order.name
+			}
+			_logger.info(data)
+			requests.post('https://bitrixdemo.site/odoo/timbrado.php', data=data)
+		return res
