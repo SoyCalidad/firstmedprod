@@ -6,7 +6,9 @@ from werkzeug.exceptions import BadRequest, NotFound
 from datetime import datetime
 
 import jwt
+import pytz
 
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from .utils import ISSUER, get_secret, token_protected
 
 
@@ -110,6 +112,9 @@ class OdooController(http.Controller):
 	@token_protected
 	@http.route('/api/saleRegister', auth='public', type='json', cors='*')
 	def create_sale_order(self, **post):
+		user_tz = self.env.user.tz or pytz.utc
+		local = pytz.timezone(user_tz)
+
 		client = self.get_client(post['cliente'])
 		lines = self.get_prepare_lines(post['lines'])
 		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
@@ -134,6 +139,7 @@ class OdooController(http.Controller):
 			# 'sequence_number': session.sequence_number,
 			# 'creation_date': datetime.today(),
 			'date_order': datetime.strptime(post['date_order'], "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
+			'date_order': datetime.strftime(pytz.utc.localize(datetime.strptime(post['date_order'], DEFAULT_SERVER_DATETIME_FORMAT)).astimezone(local), "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
 			# 'fiscal_position_id': False,
 			# 'table_id': False,
 			# 'floor': False,
