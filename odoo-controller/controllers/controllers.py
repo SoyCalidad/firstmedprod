@@ -132,45 +132,33 @@ class OdooController(http.Controller):
 		if not carrier:
 			raise NotFound(description='Método de pago no encontrado con el nombre {}'.format(post['tipo_pago']))
 		data = [{
-			# 'name': 'Pedido{}'.format(order_uid),
-			# 'amount_paid': post['amount_total'],
-			# 'amount_total': post['amount_total'],
-			# 'amount_tax': post['amount_tax'],
-			# 'amount_return': 0,
 			'order_line': lines,
-			# 'statement_ids': [],
-			# 'pos_session_id': session.id,
-			# 'pricelist_id': session.config_id.pricelist_id.id,
 			'partner_id': client.id,
 			'user_id': request.env['res.users'].sudo().search([('name', '=', post['vendedor'])]).id,
-			# 'uid': order_uid,
-			# 'sequence_number': session.sequence_number,
-			# 'creation_date': datetime.today(),
 			'date_order': datetime.strptime(post['date_order'], "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
 			'date_order': datetime.strftime(pytz.utc.localize(datetime.strptime(post['date_order'], DEFAULT_SERVER_DATETIME_FORMAT)).astimezone(local), "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
-			# 'fiscal_position_id': False,
-			# 'table_id': False,
-			# 'floor': False,
-			# 'floor_id': False,
-			# 'customer_count': 1,
-			# 'operation_code': post['operation_code'],
-			# 'payment_code': post['payment_code'],
-			# 'observation': post['observation'],
 			'note': '',
-			# 'elimination_reason': False,
 			'physician_id': medico.id,
 			'coupon_id': coupon.id,
 			'carrier_id': carrier.id,
 			'journal_id': journal.id,
 		}]
-		# payments = self.get_payments(post['payments'], session)
-		# data[0]['data']['statement_ids'] = payments
-		# session.sudo().write({'sequence_number': session.sequence_number + 1})
-		order = request.env['sale.order'].sudo().create(data)
-		# order = request.env['pos.order'].sudo().browse(order[0])
-		# request.env['pos.order'].sudo().send_invoice_mail(
-		# 	order.invoice_id.id, order.partner_id.email)
 
+		sale_order = request.env['sale.order']
+		if 'id' in post:
+			order = sale_order.browse(post['id'])
+			if order:
+				order.sudo().write(data)
+				return {
+					"status_code": "200",
+					"state": "success",
+					"message": "Orden Modificada",
+					"data": {
+						"id": order.id
+					}
+				}
+
+		order = sale_order.sudo().create(data)
 		return {
 			"status_code": "200",
 			"state": "success",
