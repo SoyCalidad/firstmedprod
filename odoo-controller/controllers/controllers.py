@@ -41,18 +41,44 @@ class OdooController(http.Controller):
 
 	def get_client(self, client):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
-		identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
-		name = client['name']
-		if identification_type.l10n_pe_vat_code == '1':
-			name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
 		if not client1:
-			client1 = request.env['res.partner'].sudo().create({
-				'lang': 'es_PE',
-				'name': name,
-				'vat': client['code'],
-				'l10n_latam_identification_type_id': identification_type.id
-			})
-
+			identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
+			name = client['name']
+			if identification_type.l10n_pe_vat_code == '1':
+				name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
+				client1 = request.env['res.partner'].sudo().create({
+					'lang': 'es_PE',
+					'name': name,
+					'vat': client['code'],
+					'l10n_latam_identification_type_id': identification_type.id
+				})
+			elif identification_type.l10n_pe_vat_code == '6':
+				# name = str(request.env['res.partner'].l10n_pe_ruc_connection(client['code'])['nombre'] or '').strip()
+				result = self.l10n_pe_ruc_connection(client['code'])
+				if result:
+					client1 = request.env['res.partner'].sudo().create({
+						'lang': 'es_PE',
+						'alert_warning_vat': False,
+						'company_type': 'company',
+						'name': str(result['business_name']).strip(),
+						'commercial_name': str(result['commercial_name'] or result['business_name']).strip(),
+						'street': str(result['residence']).strip(),
+						'state': 'habido' if result['contributing_condition'] == 'HABIDO' else 'nhabido',
+						'vat': client['code'],
+						'l10n_latam_identification_type_id': identification_type.id
+					})
+					if result['value']:
+						client1.l10n_pe_district = result['value']['district_id']
+						client1.city_id = result['value']['city_id'] 
+						client1.state_id = result['value']['state_id'] 
+						client1.country_id = result['value']['country_id']
+			else:
+				client1 = request.env['res.partner'].sudo().create({
+					'lang': 'es_PE',
+					'name': client['name'],
+					'vat': client['code'],
+					'l10n_latam_identification_type_id': identification_type.id
+				})
 		return client1
 
 	def get_prepare_lines(self, lines):
@@ -84,11 +110,14 @@ class OdooController(http.Controller):
 	@token_protected
 	@http.route('/api/saleRegister', auth='public', type='json', cors='*')
 	def create_sale_order(self, **post):
-		# return "Hello, world!"
 		client = self.get_client(post['cliente'])
 		lines = self.get_prepare_lines(post['lines'])
 		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
+		if not medico:
+			raise NotFound(description='Médico no encontrado con el nombre {}'.format(post['medico']))
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
+		if not medico:
+			raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
 		data = [{
 			# 'name': 'Pedido{}'.format(order_uid),
 			# 'amount_paid': post['amount_total'],
@@ -104,7 +133,7 @@ class OdooController(http.Controller):
 			# 'uid': order_uid,
 			# 'sequence_number': session.sequence_number,
 			# 'creation_date': datetime.today(),
-			'date_order': datetime.today(),
+			'date_order': datetime.strptime(post['date_order'], "%Y-%m-%d %H:%M:%S").date() if post['date_order'] else datetime.today(),
 			# 'fiscal_position_id': False,
 			# 'table_id': False,
 			# 'floor': False,
