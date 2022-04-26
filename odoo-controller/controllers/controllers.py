@@ -148,8 +148,8 @@ class OdooController(http.Controller):
 		if 'id' in post:
 			order = sale_order.browse(post['id'])
 			if order:
-				line = data.pop('order_line')
-				order.sudo().write(data)
+				line = data[0].pop('order_line')
+				order.sudo().write(data[0])
 				return {
 					"status_code": "200",
 					"state": "success",
