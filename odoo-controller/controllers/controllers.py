@@ -85,7 +85,7 @@ class OdooController(http.Controller):
 	@http.route('/api/saleRegister', auth='public', type='json', cors='*')
 	def create_sale_order(self, **post):
 		# return "Hello, world!"
-		client = self.get_client(post['client'])
+		client = self.get_client(post['cliente'])
 		lines = self.get_prepare_lines(post['lines'])
 		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
@@ -100,7 +100,7 @@ class OdooController(http.Controller):
 			# 'pos_session_id': session.id,
 			# 'pricelist_id': session.config_id.pricelist_id.id,
 			'partner_id': client.id,
-			# 'user_id': request.env['res.users'].sudo().browse(post['user']).id,
+			'user_id': request.env['res.users'].sudo().search([('name', '=', post['user'])]).id,
 			# 'uid': order_uid,
 			# 'sequence_number': session.sequence_number,
 			# 'creation_date': datetime.today(),
