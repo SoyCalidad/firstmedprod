@@ -124,6 +124,9 @@ class OdooController(http.Controller):
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
 		if not coupon:
 			raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
+		carrier = request.env['delivery.carrier'].sudo().search([('name', '=',  post['tipo_entrega'])], limit=1)
+		if not carrier:
+			raise NotFound(description='Método de envío no encontrado con el nombre {}'.format(post['tipo_entrega']))
 		data = [{
 			# 'name': 'Pedido{}'.format(order_uid),
 			# 'amount_paid': post['amount_total'],
@@ -153,6 +156,7 @@ class OdooController(http.Controller):
 			# 'elimination_reason': False,
 			'physician_id': medico.id,
 			'coupon_id': coupon.id,
+			'carrier_id': carrier.id,
 		}]
 		# payments = self.get_payments(post['payments'], session)
 		# data[0]['data']['statement_ids'] = payments
