@@ -100,7 +100,7 @@ class OdooController(http.Controller):
 			# 'pos_session_id': session.id,
 			# 'pricelist_id': session.config_id.pricelist_id.id,
 			'partner_id': client.id,
-			'user_id': request.env['res.users'].sudo().search([('name', '=', post['user'])]).id,
+			'user_id': request.env['res.users'].sudo().search([('name', '=', post['vendedor'])]).id,
 			# 'uid': order_uid,
 			# 'sequence_number': session.sequence_number,
 			# 'creation_date': datetime.today(),
