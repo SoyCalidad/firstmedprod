@@ -104,6 +104,7 @@ class OdooController(http.Controller):
 				'price_unit': l['price_unit'],
 				'product_id': product.id,
 				'tax_id': [[6, False, [tax.id]]],
+				'discount': l['descuento'] if 'descuento' in l else 0.0,
 			}])
 			
 		return order_lines
@@ -121,7 +122,7 @@ class OdooController(http.Controller):
 		if not medico:
 			raise NotFound(description='Médico no encontrado con el nombre {}'.format(post['medico']))
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
-		if not medico:
+		if not coupon:
 			raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
 		data = [{
 			# 'name': 'Pedido{}'.format(order_uid),
