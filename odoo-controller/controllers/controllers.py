@@ -89,12 +89,13 @@ class OdooController(http.Controller):
 			params = list()
 			if 'id' in l and l['id']:
 				params = [('id', '=', l['id'])]
-			else:
-				if 'product_code' in l:
-					params = [('default_code', '=', l['product_code'])]
-			product = request.env['product.product'].sudo().search(params)
+			elif 'product_code' in l:
+				params = [('default_code', '=', l['product_code'])]
+			elif 'product_name' in l:
+				params = [('name', '=', l['product_name'])]
+			product = request.env['product.product'].sudo().search(params, limit=1)
 			if not product:
-				raise NotFound(description='Producto no encontrado con el codigo {}'.format(l['product_code']))
+				raise NotFound(description='Producto no encontrado con el nombre {}'.format(l['product_name']))
 			tax = request.env['account.tax'].sudo().search([
 				('name', '=', l['tax_code']), ('type_tax_use', '=', 'sale')], limit=1)
 			if not tax:
