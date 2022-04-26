@@ -112,7 +112,7 @@ class OdooController(http.Controller):
 	@token_protected
 	@http.route('/api/saleRegister', auth='public', type='json', cors='*')
 	def create_sale_order(self, **post):
-		user_tz = request.env.user.tz or pytz.utc
+		user_tz = request.env['res.users'].sudo().search([('name', '=', post['vendedor'])]).tz or pytz.utc
 		local = pytz.timezone(user_tz)
 
 		client = self.get_client(post['cliente'])
