@@ -133,7 +133,7 @@ class OdooController(http.Controller):
 			# 'uid': order_uid,
 			# 'sequence_number': session.sequence_number,
 			# 'creation_date': datetime.today(),
-			'date_order': datetime.strptime(post['date_order'], "%Y-%m-%d %H:%M:%S").date() if post['date_order'] else datetime.today(),
+			'date_order': datetime.strptime(post['date_order'], "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
 			# 'fiscal_position_id': False,
 			# 'table_id': False,
 			# 'floor': False,
