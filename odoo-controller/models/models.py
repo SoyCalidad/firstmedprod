@@ -19,6 +19,9 @@ class SaleOrder(models.Model):
 
 	physician_id = fields.Many2one('res.partner', string='Médico', select=True)
 	coupon_id = fields.Many2one('coupon.program', string='Promociones', select=True)
+	journal_id = fields.Many2one('account.journal', store=True, readonly=False,
+		compute='_compute_journal_id',
+		domain="[('company_id', '=', company_id), ('type', 'in', ('bank', 'cash'))]")
 
 
 class Picking(models.Model):

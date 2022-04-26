@@ -23,6 +23,9 @@
 					<field name="coupon_id" invisible="0"/>
 					<field name="physician_id" domain="[('is_physician','=',True)]" context="{'search_default_is_physician':1, 'default_is_physician':1}"/>
 				</xpath>
+				<xpath expr="//field[@name='payment_term_id']" position="before">
+					<field name="journal_id" invisible="0"/>
+				</xpath>
 			</field>
 		</record>
 
