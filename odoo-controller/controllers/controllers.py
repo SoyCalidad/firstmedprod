@@ -100,7 +100,7 @@ class OdooController(http.Controller):
 				('name', '=', l['tax_code']), ('type_tax_use', '=', 'sale')], limit=1)
 			if not tax:
 				raise NotFound(description='Impuesto no encontrado con el codigo {}'.format(l['tax_code']))
-			order_lines.append([6, 0, {
+			order_lines.append([0, 0, {
 				'product_uom_qty': l['qty'],
 				'price_unit': l['price_unit'],
 				'product_id': product.id,
