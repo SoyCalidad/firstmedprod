@@ -46,12 +46,17 @@ class OdooController(http.Controller):
 		if not client1:
 			identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
 			name = client['name']
+			l10n_pe_district = request.env['l10n_pe.res.city.district'].sudo().search([('name', '=', client['district'])], limit=1)
 			if identification_type.l10n_pe_vat_code == '1':
 				name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
 				client1 = request.env['res.partner'].sudo().create({
 					'lang': 'es_PE',
 					'name': name,
 					'vat': client['code'],
+					'street': client['address'] if 'address' in client else '',
+					'phone': client['phone'] if 'phone' in client else '',
+					'email': client['email'] if 'email' in client else '',
+					'l10n_pe_district': l10n_pe_district.id if l10n_pe_district else None,
 					'l10n_latam_identification_type_id': identification_type.id
 				})
 			elif identification_type.l10n_pe_vat_code == '6':
