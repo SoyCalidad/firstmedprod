@@ -8,6 +8,12 @@ from odoo import models, fields, api
 _logger = logging.getLogger(__name__)
 
 
+class Company(models.Model):
+	_inherit = "res.company"
+
+	p_currency_id = fields.Many2one('res.currency', string='Moneda compra', required=True, default=lambda self: self._default_currency_id())
+
+
 class ResUsers(models.Model):
 	_inherit = "res.users"
 
@@ -20,6 +26,33 @@ class SaleOrder(models.Model):
 	physician_id = fields.Many2one('res.partner', string='Médico', select=True)
 	coupon_id = fields.Many2one('coupon.program', string='Promociones', select=True)
 	journal_id = fields.Many2one('account.journal', store=True, readonly=False, domain="[('company_id', '=', company_id), ('type', 'in', ('bank', 'cash'))]")
+
+
+class PurchaseOrder(models.Model):
+	_inherit = "purchase.order"
+
+	READONLY_STATES = {
+		'purchase': [('readonly', True)],
+		'done': [('readonly', True)],
+		'cancel': [('readonly', True)],
+	}
+
+	currency_id = fields.Many2one('res.currency', 'Moneda compra', required=True, states=READONLY_STATES, default=lambda self: self.env.company.p_currency_id.id)
+
+	@api.onchange('partner_id', 'company_id')
+	def onchange_partner_id(self):
+		# Ensures all properties and fiscal positions
+		# are taken with the company of the order
+		# if not defined, with_company doesn't change anything.
+		self = self.with_company(self.company_id)
+		if not self.partner_id:
+			self.fiscal_position_id = False
+			self.currency_id = self.env.company.p_currency_id.id
+		else:
+			self.fiscal_position_id = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id)
+			self.payment_term_id = self.partner_id.property_supplier_payment_term_id.id
+			self.currency_id = self.partner_id.property_purchase_currency_id.id or self.env.company.p_currency_id.id
+		return {}
 
 
 class Picking(models.Model):

@@ -56,7 +56,10 @@ class OdooController(http.Controller):
 			identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
 			name = client['name']
 			if identification_type.l10n_pe_vat_code == '1':
-				name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
+				result = request.env['res.partner'].l10n_pe_dni_connection(client['code'])
+				# name = str(request.env['res.partner'].l10n_pe_dni_connection(client['code'])['nombre'] or '').strip()
+				if result:
+					name = str(result['nombre']).strip()
 				client1 = request.env['res.partner'].sudo().create({
 					'lang': 'es_PE',
 					'name': name,
@@ -69,7 +72,7 @@ class OdooController(http.Controller):
 				})
 			elif identification_type.l10n_pe_vat_code == '6':
 				# name = str(request.env['res.partner'].l10n_pe_ruc_connection(client['code'])['nombre'] or '').strip()
-				result = self.l10n_pe_ruc_connection(client['code'])
+				result = request.env['res.partner'].l10n_pe_ruc_connection(client['code'])
 				if result:
 					client1 = request.env['res.partner'].sudo().create({
 						'lang': 'es_PE',
@@ -80,6 +83,8 @@ class OdooController(http.Controller):
 						'street': str(result['residence']).strip(),
 						'state': 'habido' if result['contributing_condition'] == 'HABIDO' else 'nhabido',
 						'vat': client['code'],
+						'phone': client['phone'] if 'phone' in client else '',
+						'email': client['email'] if 'email' in client else '',
 						'l10n_latam_identification_type_id': identification_type.id
 					})
 					if result['value']:

@@ -2,6 +2,17 @@
 	<data>
 		<!-- explicit list view definition -->
 
+		<record model="ir.ui.view" id="res_view_company_form">
+			<field name="name">res.company.form.view</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='currency_id']" position="after">
+					<field name="p_currency_id" options="{'no_create': True, 'no_open': True}" context="{'active_test': False}"/>
+				</xpath>
+			</field>
+		</record>
+
 		<record model="ir.ui.view" id="res_users_view_form">
 			<field name="name">res.users.form.view</field>
 			<field name="model">res.users</field>
