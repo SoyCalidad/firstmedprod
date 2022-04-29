@@ -45,7 +45,7 @@ class OdooController(http.Controller):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
 		l10n_pe_district = request.env['l10n_pe.res.city.district'].sudo().search([('name', '=', client['district'])], limit=1)
 		if client1:
-			client1 = request.env['res.partner'].sudo().write({
+			client1.write({
 				'lang': 'es_PE',
 				'street': client['address'] if 'address' in client else '',
 				'phone': client['phone'] if 'phone' in client else '',
