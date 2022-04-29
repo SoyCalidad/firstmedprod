@@ -44,6 +44,7 @@ class OdooController(http.Controller):
 	def get_client(self, client):
 		client1 = request.env['res.partner'].sudo().search([('vat', '=', client['code'])], limit=1)
 		l10n_pe_district = request.env['l10n_pe.res.city.district'].sudo().search([('name', '=', client['district'])], limit=1)
+		city = l10n_pe_district.city_id
 		if client1:
 			client1.write({
 				'lang': 'es_PE',
@@ -51,6 +52,9 @@ class OdooController(http.Controller):
 				'phone': client['phone'] if 'phone' in client else '',
 				'email': client['email'] if 'email' in client else '',
 				'l10n_pe_district': l10n_pe_district.id if l10n_pe_district else None,
+				'city_id': l10n_pe_district.city_id.id if l10n_pe_district.city_id else None,
+				'state_id': l10n_pe_district.city_id.state_id.id if l10n_pe_district.city_id.state_id else None,
+				'country_id': l10n_pe_district.city_id.state_id.country_id.id if l10n_pe_district.city_id.state_id.country_id else None,
 			})
 		else:
 			identification_type = request.env['l10n_latam.identification.type'].sudo().search([('name', '=', client['identification_type'])], limit=1)
@@ -68,6 +72,9 @@ class OdooController(http.Controller):
 					'phone': client['phone'] if 'phone' in client else '',
 					'email': client['email'] if 'email' in client else '',
 					'l10n_pe_district': l10n_pe_district.id if l10n_pe_district else None,
+					'city_id': l10n_pe_district.city_id.id if l10n_pe_district.city_id else None,
+					'state_id': l10n_pe_district.city_id.state_id.id if l10n_pe_district.city_id.state_id else None,
+					'country_id': l10n_pe_district.city_id.state_id.country_id.id if l10n_pe_district.city_id.state_id.country_id else None,
 					'l10n_latam_identification_type_id': identification_type.id
 				})
 			elif identification_type.l10n_pe_vat_code == '6':
