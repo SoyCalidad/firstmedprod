@@ -46,7 +46,7 @@ class OdooController(http.Controller):
 		query_search = [('name', '=', client['district'])]
 		if 'province' in client:
 			# l10n_city = request.env['res.city'].search([('name', '=', client['province'])], limit=1)
-			query_search.append(('city:id.name', '=', client['province']))
+			query_search.append(('city_id.name', '=', client['province']))
 		l10n_pe_district = request.env['l10n_pe.res.city.district'].sudo().search(query_search, limit=1)
 		city = l10n_pe_district.city_id
 		if client1:
