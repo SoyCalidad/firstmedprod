@@ -148,8 +148,8 @@ class OdooController(http.Controller):
 		if not medico:
 			raise NotFound(description='Médico no encontrado con el nombre {}'.format(post['medico']))
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
-		if not coupon:
-			raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
+		# if not coupon:
+		# 	raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
 		carrier = request.env['delivery.carrier'].sudo().search([('name', '=',  post['tipo_entrega'])], limit=1)
 		if not carrier:
 			raise NotFound(description='Método de envío no encontrado con el nombre {}'.format(post['tipo_entrega']))
@@ -164,7 +164,7 @@ class OdooController(http.Controller):
 			'date_order': datetime.strftime(pytz.utc.localize(datetime.strptime(post['date_order'], DEFAULT_SERVER_DATETIME_FORMAT)).astimezone(local), "%Y-%m-%d %H:%M:%S") if post['date_order'] else datetime.today(),
 			'note': '',
 			'physician_id': medico.id,
-			'coupon_id': coupon.id,
+			'coupon_id': coupon.id if coupon else None,
 			'carrier_id': carrier.id,
 			'journal_id': journal.id,
 		}]
