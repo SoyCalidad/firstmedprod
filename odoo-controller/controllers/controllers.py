@@ -150,7 +150,7 @@ class OdooController(http.Controller):
 		lines = self.get_prepare_lines(post['lines'])
 		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
 		if not medico:
-			request.env['res.partner'].sudo().create({'name': post['medico'], 'is_physician': True})
+			request.env['res.partner'].sudo().create({'name': post['medico'], 'is_physician': True, 'lang': 'es_PE',})
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
 		# if not coupon:
 		# 	raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
