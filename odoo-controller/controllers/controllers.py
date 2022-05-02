@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from pydoc import cli
-from jmespath import search
 from odoo import http
 from odoo.http import request
 
