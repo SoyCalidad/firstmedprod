@@ -132,3 +132,36 @@ class AccountMove(models.Model):
 	def _constrains_date_sequence(self):
 		return True
 
+
+class Users(models.Model):
+	_inherit = "res.users"
+
+	sale_journal_ids = fields.Many2many('account.journal', string='Diarios de Ventas', domain=[('type', '=', 'sale')], 
+		help="Accounting journal used to post sales entries.")
+
+
+class SaleAdvancePaymentInv(models.TransientModel):
+	_inherit = "sale.advance.payment.inv"
+
+	def _default_sale_journal(self):
+		request_search = [('type', '=', 'sale'), ('company_id', '=', self.env.company.id)]
+		journals_uid = self.env.user.sale_journal_ids
+		if journals_uid:
+			request_search = [('id', 'in', journals_uid.ids)]
+		return self.env['account.journal'].search(request_search, limit=1)
+
+	def _sale_journal_domain(self):
+		request_search = [('type', '=', 'sale'), ('company_id', '=', self.env.company.id)]
+		journals_uid = self.env.user.sale_journal_ids
+		if journals_uid:
+			request_search = [('id', 'in', journals_uid.ids)]
+		return request_search
+
+	journal_id = fields.Many2one('account.journal', string='Diario de Ventas', domain=_sale_journal_domain, 
+		help="Accounting journal used to post sales entries.", default=_default_sale_journal, ondelete='restrict')
+
+	def _prepare_invoice_values(self, order, name, amount, so_line):
+		res = super()._prepare_invoice_values(order, name, amount, so_line)
+		if self.journal_id:
+			res['journal_id'] = self.journal_id.id
+		return res	
