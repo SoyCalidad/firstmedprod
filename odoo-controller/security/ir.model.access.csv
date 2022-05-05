@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_odoo-controller_odoo-controller,odoo-controller.odoo-controller,model_odoo-controller_odoo-controller,base.group_user,1,1,1,1
+access_payment_type_manager,payment.type.order.manager,model_payment_type,sales_team.group_sale_manager,1,1,1,1
+access_payment_type_sale,payment.type.order.sale,model_payment_type,sales_team.group_sale_salesman,1,0,0,0

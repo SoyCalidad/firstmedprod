@@ -151,6 +151,7 @@ class OdooController(http.Controller):
 		medico = request.env['res.partner'].sudo().search([('name', '=',  post['medico']), ('is_physician', '=', True)], limit=1)
 		if not medico:
 			request.env['res.partner'].sudo().create({'name': post['medico'], 'is_physician': True, 'lang': 'es_PE',})
+		payment_type = request.env['payment.type'].sudo().search([('name', '=',  post['modo_pago'])], limit=1)
 		coupon = request.env['coupon.program'].sudo().search([('name', '=',  post['promocion'])], limit=1)
 		# if not coupon:
 		# 	raise NotFound(description='Promoción no encontrado con el nombre {}'.format(post['promocion']))
@@ -171,6 +172,7 @@ class OdooController(http.Controller):
 			'coupon_id': coupon.id if coupon else None,
 			'carrier_id': carrier.id,
 			'journal_id': journal.id,
+			'payment_type': payment_type.id if payment_type else None,
 		}]
 
 		sale_order = request.env['sale.order']

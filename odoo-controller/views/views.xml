@@ -36,6 +36,7 @@
 				</xpath>
 				<xpath expr="//field[@name='payment_term_id']" position="before">
 					<field name="journal_id" invisible="0"/>
+					<field name="payment_type" invisible="0"/>
 				</xpath>
 			</field>
 		</record>

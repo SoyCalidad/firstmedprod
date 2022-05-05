@@ -8,6 +8,14 @@ from odoo import models, fields, api
 _logger = logging.getLogger(__name__)
 
 
+class PaymentType(models.Model):
+	_name = "payment.type"
+	_description = "Payment Type"
+
+	name = fields.Char(string='Nombre', required=True)
+	key = fields.Text(string='Descripción')
+	
+
 class Company(models.Model):
 	_inherit = "res.company"
 
@@ -25,7 +33,8 @@ class SaleOrder(models.Model):
 
 	physician_id = fields.Many2one('res.partner', string='Médico', select=True)
 	coupon_id = fields.Many2one('coupon.program', string='Promociones', select=True)
-	journal_id = fields.Many2one('account.journal', store=True, readonly=False, domain="[('company_id', '=', company_id), ('type', 'in', ('bank', 'cash'))]")
+	journal_id = fields.Many2one('account.journal', string="Método de Pago", store=True, readonly=False, domain="[('company_id', '=', company_id), ('type', 'in', ('bank', 'cash'))]")
+	payment_type = fields.Many2one('payment.type', string='Modo de Pago', select=True)
 
 
 class PurchaseOrder(models.Model):
