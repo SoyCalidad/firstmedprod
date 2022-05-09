@@ -173,7 +173,9 @@ class SaleAdvancePaymentInv(models.TransientModel):
 
 	def _prepare_invoice_values(self, order, name, amount, so_line):
 		res = super()._prepare_invoice_values(order, name, amount, so_line)
+		_logger.info("Create journal -------------->")
 		if self.journal_id:
+			_logger.info(self.journal_id.name)
 			res['journal_id'] = self.journal_id.id
 			res['l10n_latam_document_type_id'] = self.journal_id.l10n_latam_document_type_id.id
 		return res	
