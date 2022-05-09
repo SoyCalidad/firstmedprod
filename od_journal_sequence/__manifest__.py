@@ -10,7 +10,7 @@
     'author': 'Odoo Developers',
     'support': 'developersodoo@gmail.com',
     'live_test_url': 'https://www.youtube.com/watch?v=z-xZwCah7wM',
-    'depends': ['account', 'l10n_latam_invoice_document', 'sale'],
+    'depends': ['account', 'l10n_latam_invoice_document', 'l10n_pe_edi_odoofact', 'sale'],
     'demo': [],
     'data': [
         'security/ir.model.access.csv',
