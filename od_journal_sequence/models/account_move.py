@@ -164,5 +164,5 @@ class SaleAdvancePaymentInv(models.TransientModel):
 		res = super()._prepare_invoice_values(order, name, amount, so_line)
 		if self.journal_id:
 			res['journal_id'] = self.journal_id.id
-			res['l10n_latam_document_type_id'] = self.l10n_latam_document_type_id.id
+			res['l10n_latam_document_type_id'] = self.journal_id.l10n_latam_document_type_id.id
 		return res	
