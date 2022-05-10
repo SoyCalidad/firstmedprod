@@ -612,7 +612,7 @@ class AccountMove(models.Model):
 
 		starting_sequence = "%s-%06d" % (self.journal_id.code, 0)
 		if self.journal_id.refund_sequence and self.move_type in ('out_refund'):
-			starting_sequence = "NC" + starting_sequence
+			# starting_sequence = "NC" + starting_sequence
 			starting_sequence = starting_sequence
 		return starting_sequence
 
