@@ -171,14 +171,23 @@ class SaleAdvancePaymentInv(models.TransientModel):
 	journal_id = fields.Many2one('account.journal', string='Diario de Ventas', domain=_sale_journal_domain, 
 		help="Accounting journal used to post sales entries.", default=_default_sale_journal, ondelete='restrict')
 
+	@api.onchange('journal_id')
+	def _onchange_journal_id(self):
+		""" When change journal_id, 
+			Change journal_id in order.
+		"""
+		company_id = self._context.get('default_company_id', self.env.company.id)
+		domain = [('company_id', '=', company_id), ('type', '=', 'sale')]
+		if self._context.get('default_currency_id'):
+			domain.append('currency_id', '=', self._context['default_currency_id'])
+		journal = self.env['account.journal'].search(domain, limit=1)
+		if journal and self.journal_id:
+			sequence = journal.sequence
+			journal.write({'sequence': self.journal_id.sequence})
+			self.journal_id.write({'sequence': sequence})		
+
 	def _prepare_invoice_values(self, order, name, amount, so_line):
 		res = super()._prepare_invoice_values(order, name, amount, so_line)
-		_logger.info("Create journal -------------->")
-
-		res.update({
-			'l10n_pe_edi_operation_type': '4',
-		})
-
 		if self.journal_id:
 			res.update({
 				'journal_id': self.journal_id.id,

@@ -21,12 +21,12 @@ class SaleAdvancePaymentInv(models.TransientModel):
         })
         return res
     
-    # def _prepare_invoice_values(self, order, name, amount, so_line):
-    #     res = super(SaleAdvancePaymentInv, self)._prepare_invoice_values(order, name, amount, so_line)
-    #     res.update({
-    #         'l10n_pe_edi_operation_type': '4',
-    #     })
-    #     return res
+    def _prepare_invoice_values(self, order, name, amount, so_line):
+        res = super(SaleAdvancePaymentInv, self)._prepare_invoice_values(order, name, amount, so_line)
+        res.update({
+            'l10n_pe_edi_operation_type': '4',
+        })
+        return res
     
     def _create_invoice(self, order, so_line, amount):
         res = super(SaleAdvancePaymentInv, self)._create_invoice(order, so_line, amount)
