@@ -91,12 +91,13 @@ class StockMove(models.Model):
 			locations = [r.location_dest_id, r.location_id]
 			for location in locations:
 				if location.usage == 'internal':
+					sq = self.env['stock.quant'].search([('location_id','=',location.id),('product_id','=',r.product_id.id)])
 					data = {
 						'id_producto': r.product_id.id,
 						'producto': r.product_id.name,
 						'almacen-ubicacion': location.complete_name if location else False,
 						'tipo': r.picking_type_id.name if r.picking_type_id else 'Ajuste de inventario',
-						'stock': self.env['stock.quant'].search([('location_id','=',location.id),('product_id','=',r.product_id.id)]).quantity,
+						'stock': sq[-1].quantity if sq else 0.0,
 						'available_stock': self.env['stock.quant'].search([('location_id','=',location.id),('product_id','=',r.product_id.id)]).available_quantity,
 						'consumo': r.quantity_done,
 						'fecha_modificacion': r.write_date - timedelta(hours=5),
