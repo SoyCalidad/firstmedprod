@@ -13,6 +13,35 @@ class AccountMove(models.Model):
 	# name = fields.Char(compute="_compute_name_by_sequence")
 
 	@api.model
+	def _search_default_journal(self, journal_types):
+		company_id = self._context.get('default_company_id', self.env.company.id)
+		domain = [('company_id', '=', company_id), ('type', 'in', journal_types)]
+
+		journals_uid = self.env.user.sale_journal_ids
+		if 'sale' in journal_types and journals_uid:
+			domain = [('id', 'in', journals_uid.ids)]
+
+		journal = None
+		if self._context.get('default_currency_id'):
+			currency_domain = domain + [('currency_id', '=', self._context['default_currency_id'])]
+			journal = self.env['account.journal'].search(currency_domain, limit=1)
+
+		if not journal:
+			journal = self.env['account.journal'].search(domain, limit=1)
+
+		if not journal:
+			company = self.env['res.company'].browse(company_id)
+
+			error_msg = _(
+				"No journal could be found in company %(company_name)s for any of those types: %(journal_types)s",
+				company_name=company.display_name,
+				journal_types=', '.join(journal_types),
+			)
+			raise UserError(error_msg)
+
+		return journal	
+
+	@api.model
 	def _get_default_journal(self):
 		''' Get the default journal.
 		It could either be passed through the context using the 'default_journal_id' key containing its id,
