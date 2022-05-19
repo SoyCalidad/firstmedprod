@@ -131,8 +131,34 @@ class PrintInvoiceSummary(models.TransientModel):
 			index = 1
 			for invoice in invoice_objs:
 				months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Set','Oct','Nov','Dic']
-				payments = self.env['account.payment'].search([('move_id.ref','=',invoice.name)])
-				payment = payments[0] if payments else False
+
+				self._cr.execute('''
+					SELECT
+						invoice.id,
+						ARRAY_AGG(DISTINCT payment.id) AS payment_ids
+					FROM account_move invoice
+					JOIN account_move_line line ON line.move_id = invoice.id
+					JOIN account_partial_reconcile part ON
+						part.debit_move_id = line.id
+						OR
+						part.credit_move_id = line.id
+					JOIN account_move_line counterpart_line ON
+						part.debit_move_id = counterpart_line.id
+						OR
+						part.credit_move_id = counterpart_line.id
+					JOIN account_move move ON move.id = counterpart_line.move_id
+					JOIN account_payment payment ON move.id = payment.move_id
+					WHERE invoice.id = %i
+						AND line.id != counterpart_line.id
+					GROUP BY invoice.id
+				''' % invoice.id)
+				query_res = self._cr.dictfetchall()
+				payments = [res.get('payment_ids', []) for res in query_res]
+				payments = [j for i in payments for j in i]
+				payments = self.env['account.payment'].browse(payments)
+
+				# payments = self.env['account.payment'].search([('reconciled_invoice_ids.ids','=',invoice.name)])
+				# payment = payments[0] if payments else False
 				invoice_date = invoice.invoice_date.strftime('%d/%m/%Y')
 				amount = 0
 				for journal_item in invoice.line_ids:
@@ -145,23 +171,36 @@ class PrintInvoiceSummary(models.TransientModel):
 				worksheet.write(row, 5, invoice.partner_id.vat and invoice.partner_id.vat if invoice.partner_id else "", column_info_style)
 				worksheet.write(row, 6, invoice.partner_id.name if invoice.partner_id else '', column_info_style)
 				worksheet.write(row, 7, invoice.amount_total_signed, column_info_style)
-				worksheet.write(row, 8, payment.amount if payment and payment.journal_id.type == 'cash' else 0.0, column_info_style)
-				worksheet.write(row, 9, 0.00, column_info_style)
-				worksheet.write(row, 10, payment.amount if payment and payment.journal_id.type == 'bank' else 0.0, column_info_style)
-				worksheet.write(row, 11, payment.journal_id.name if payment else '', column_info_style)
-				worksheet.write(row, 12, payment.ref if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
-				worksheet.write(row, 13, payment.date.strftime('%d/%m/%Y') if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
 
-				amount_tot_9 += invoice.amount_total_signed
-				amount_tot_10 += payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
-				amount_tot_11 += payment.amount if payment and payment.journal_id.type == 'bank' else 0.0
+				if payments:
+					for payment in payments: 
+						worksheet.write(row, 8, payment.amount if payment and payment.journal_id.type == 'cash' else 0.0, column_info_style)
+						worksheet.write(row, 9, 0.00, column_info_style)
+						worksheet.write(row, 10, payment.amount if payment and payment.journal_id.type == 'bank' else 0.0, column_info_style)
+						worksheet.write(row, 11, payment.journal_id.name if payment else '', column_info_style)
+						worksheet.write(row, 12, payment.ref if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
+						worksheet.write(row, 13, payment.date.strftime('%d/%m/%Y') if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
+
+						amount_tot_9 += invoice.amount_total_signed
+						amount_tot_10 += payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
+						amount_tot_11 += payment.amount if payment and payment.journal_id.type == 'bank' else 0.0
+						row += 1
+				else:
+					worksheet.write(row, 8, 0.00, column_info_style)
+					worksheet.write(row, 9, 0.00, column_info_style)
+					worksheet.write(row, 10, 0.00, column_info_style)
+					worksheet.write(row, 11, '', column_info_style)
+					worksheet.write(row, 12, "/ /", column_info_style)
+					worksheet.write(row, 13, "/ /", column_info_style)
+					row += 1
+					
 				# amount_tot_12 += invoice.l10n_pe_edi_amount_isc
 				# amount_tot_13 += invoice.l10n_pe_edi_amount_igv
 				# amount_tot_14 += invoice.l10n_pe_edi_amount_icbper
 				# amount_tot_15 += invoice.l10n_pe_edi_amount_others
 				# amount_tot_16 += invoice.amount_total
 				# amount_tot += amount
-				row += 1
+				# row += 1
 				key = u'_'.join((invoice.partner_id.name, invoice.currency_id.name)).encode('utf-8')
 				key = str(key, 'utf-8')
 				if key not in customer_payment_data:
