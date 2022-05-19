@@ -149,8 +149,8 @@ class PrintInvoiceSummary(models.TransientModel):
 				worksheet.write(row, 9, 0.00, column_info_style)
 				worksheet.write(row, 10, payment.amount if payment and payment.journal_id.type == 'bank' else 0.0, column_info_style)
 				worksheet.write(row, 11, payment.journal_id.name if payment else '', column_info_style)
-				worksheet.write(row, 12, payment.journal_id.ref if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
-				worksheet.write(row, 13, payment.journal_id.date.strftime('%d/%m/%Y') if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
+				worksheet.write(row, 12, payment.ref if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
+				worksheet.write(row, 13, payment.date.strftime('%d/%m/%Y') if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
 
 				amount_tot_9 += invoice.amount_total_signed
 				amount_tot_10 += payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
