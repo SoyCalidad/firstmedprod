@@ -39,7 +39,18 @@
             <field name="res_model">print.invoice.summary</field>
             <field name="view_mode">form</field>
         </record>
-
+		<record id="landscape" model="report.paperformat">
+			<field name="name">Formato horizontal</field>
+			<field name="default" eval="True" />
+			<field name="orientation">Landscape</field>
+			<field name="margin_top">45</field>
+			<field name="margin_bottom">20</field>
+			<field name="margin_left">10</field>
+			<field name="margin_right">10</field>
+			<field name="header_line" eval="False"/>
+			<field name="header_spacing">35</field>
+			<field name="dpi">80</field>
+		</record>
 		<record id="action_report_invoice_summary" model="ir.actions.report">
 			<field name="name">Reporte de Facturación</field>
 			<field name="model">print.invoice.summary</field>
@@ -47,6 +58,7 @@
 			<field name="report_name">summary_invoice_report.invoice_summary_report</field>
 			<field name="report_file">summary_invoice_report.invoice_summary_report</field>
             <field name="binding_type">report</field>
+			<field name="paperformat_id" ref="summary_invoice_report.landscape"/>
 		</record>
 
        <menuitem  id="menu_print_invoice_summary_report" action="action_print_invoice_summary"

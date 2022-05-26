@@ -32,7 +32,6 @@ class PrintInvoiceSummary(models.TransientModel):
 	invoice_objs = fields.Many2many('account.move', string='Comprobantes')
 	amount_total_debit = fields.Float('Amount debit')
 	amount_total_credit = fields.Float('Amount credit')
-
 	def action_print_invoice_summary_csv(self):
 		new_from_date = self.from_date.strftime('%Y-%m-%d')
 		new_to_date = self.to_date.strftime('%Y-%m-%d')
@@ -283,6 +282,52 @@ class PrintInvoiceSummary(models.TransientModel):
 			domain += [('partner_id', '=', self.partner_id.id)]
 
 		return self.env['account.move'].search(domain)
+	
+	def return_payments(self,invoice_id):
+		self._cr.execute('''
+			SELECT
+				invoice.id,
+				ARRAY_AGG(DISTINCT payment.id) AS payment_ids
+			FROM account_move invoice
+			JOIN account_move_line line ON line.move_id = invoice.id
+			JOIN account_partial_reconcile part ON
+				part.debit_move_id = line.id
+				OR
+				part.credit_move_id = line.id
+			JOIN account_move_line counterpart_line ON
+				part.debit_move_id = counterpart_line.id
+				OR
+				part.credit_move_id = counterpart_line.id
+			JOIN account_move move ON move.id = counterpart_line.move_id
+			JOIN account_payment payment ON move.id = payment.move_id
+			WHERE invoice.id = %i
+				AND line.id != counterpart_line.id
+			GROUP BY invoice.id
+		''' % invoice_id)
+		query_res = self._cr.dictfetchall()
+		payments = [res.get('payment_ids', []) for res in query_res]
+		payments = [j for i in payments for j in i]
+		payments = self.env['account.payment'].browse(payments)
+		payment_cash=0
+		payment_bank=0
+		way_to_pay=""
+		date="//"
+		number_mov="//"
+		if payments:
+			for payment in payments:
+				if payment.journal_id.type == 'cash':
+					payment_cash= payment_cash + payment.amount
+					way_to_pay="Efectivo"
+				if payment.journal_id.type == 'bank':
+					payment_bank= payment_bank + payment.amount
+					date = payment.date
+					way_to_pay="Banco"
+					number_mov=payment.ref
+			if (payment_bank>0 and payment_cash>0):
+				way_to_pay="Efectivo/Banco"
+			mount_total = payment_cash + payment_bank
+			return [mount_total,payment_cash,payment_bank,way_to_pay,date,number_mov]
+		return [0,0,0,0,0,0]
 
 	def action_print_invoice_summary_pdf(self):
 
@@ -305,13 +350,16 @@ class PrintInvoiceSummary(models.TransientModel):
 		self.invoice_objs = self._search_invoices()
 		self.amount_total_debit = 0
 		self.amount_total_credit = 0
+		# for payment in self.acount_payment: 
+		# 	self.acount_payment_cash= payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
+		# 	self.acount_payment_credit= payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
+		# 	self.acount_payment_bank= payment.amount if payment and payment.journal_id.type == 'bank' else 0.0
 
 		for invoice in self.invoice_objs:
 			if invoice.move_type != 'out_refund':
 				self.amount_total_debit += invoice.amount_total
 			else:
 				self.amount_total_credit += invoice.amount_total
-
 		xml_id = 'summary_invoice_report.action_report_invoice_summary'
 		res = self.env.ref(xml_id).report_action(self.ids, None)
 		res['id'] = self.env.ref(xml_id).id
