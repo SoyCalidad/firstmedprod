@@ -56,7 +56,7 @@
                                             <td name="account_invoice_line_name"><span t-field="invoice.partner_id.vat" t-options="{'widget': 'text'}"/></td>
                                             <td name="account_invoice_line_name"><span t-field="invoice.partner_id.name" t-options="{'widget': 'text'}"/></td>  
                                             <td name="account_invoice_line_name"><span t-field="invoice.amount_total" t-options="{'widget': 'text'}"/></td>
-                                            <t t-if="invoice.move_type != 'out_refund'">
+                                            <t t-if="invoice.payment_state != 'not_paid'">
                                                 <td name="account_invoice_line_name"><span t-esc="o.return_payments(invoice.id)[1]"/></td>
                                                 <td name="account_invoice_line_name">0</td>
                                                 <td name="account_invoice_line_name"><span t-esc="o.return_payments(invoice.id)[2]"/></td>
@@ -65,9 +65,9 @@
                                                 <td name="account_invoice_line_name"><span t-esc="o.return_payments(invoice.id)[4]"/></td>
                                             </t>
                                             <t t-else="">
-                                                <td name="account_invoice_line_name"></td>
+                                                <td name="account_invoice_line_name">0</td>
                                                 <td name="account_invoice_line_name"><span t-field="invoice.amount_total" t-options="{'widget': 'text'}"/></td>
-                                                <td name="account_invoice_line_name"></td>
+                                                <td name="account_invoice_line_name">0</td>
                                                 <td name="account_invoice_line_name"></td>
                                                 <td name="account_invoice_line_name">//</td>
                                                 <td name="account_invoice_line_name">//</td>
@@ -88,7 +88,13 @@
                                                     <span class="text-nowrap" t-field="o.amount_total_debit"/>
                                                 </td>
                                                 <td class="text-right">
+                                                    <span class="text-nowrap" t-field="o.amount_total_debit_cash"/>
+                                                </td>
+                                                <td class="text-right">
                                                     <span class="text-nowrap" t-field="o.amount_total_credit"/>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span class="text-nowrap" t-field="o.amount_total_debit_bank"/>
                                                 </td>
                                             </tr>
                                         </table>

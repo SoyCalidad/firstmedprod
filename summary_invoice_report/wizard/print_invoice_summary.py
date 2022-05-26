@@ -31,6 +31,8 @@ class PrintInvoiceSummary(models.TransientModel):
 	partner_id = fields.Many2one('res.partner', 'Cliente')
 	invoice_objs = fields.Many2many('account.move', string='Comprobantes')
 	amount_total_debit = fields.Float('Amount debit')
+	amount_total_debit_cash= fields.Float('Amount debit cash')
+	amount_total_debit_bank= fields.Float('Amount debit bank')
 	amount_total_credit = fields.Float('Amount credit')
 	def action_print_invoice_summary_csv(self):
 		new_from_date = self.from_date.strftime('%Y-%m-%d')
@@ -327,7 +329,7 @@ class PrintInvoiceSummary(models.TransientModel):
 				way_to_pay="Efectivo/Banco"
 			mount_total = payment_cash + payment_bank
 			return [mount_total,payment_cash,payment_bank,way_to_pay,date,number_mov]
-		return [0,0,0,0,0,0]
+		return [0,0,0,0,0]
 
 	def action_print_invoice_summary_pdf(self):
 
@@ -350,14 +352,18 @@ class PrintInvoiceSummary(models.TransientModel):
 		self.invoice_objs = self._search_invoices()
 		self.amount_total_debit = 0
 		self.amount_total_credit = 0
+		self.amount_total_debit_cash = 0
+		self.amount_total_debit_bank = 0
 		# for payment in self.acount_payment: 
 		# 	self.acount_payment_cash= payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
 		# 	self.acount_payment_credit= payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
 		# 	self.acount_payment_bank= payment.amount if payment and payment.journal_id.type == 'bank' else 0.0
 
 		for invoice in self.invoice_objs:
-			if invoice.move_type != 'out_refund':
+			if invoice.payment_state != 'not_paid':
 				self.amount_total_debit += invoice.amount_total
+				self.amount_total_debit_cash += self.return_payments(invoice.id)[1]
+				self.amount_total_debit_bank += self.return_payments(invoice.id)[2]
 			else:
 				self.amount_total_credit += invoice.amount_total
 		xml_id = 'summary_invoice_report.action_report_invoice_summary'
