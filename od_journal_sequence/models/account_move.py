@@ -253,7 +253,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
 		domain = [('company_id', '=', company_id), ('type', '=', 'sale')]
 		if self._context.get('default_currency_id'):
 			domain.append('currency_id', '=', self._context['default_currency_id'])
-		journal = self.env['account.journal'].search(domain, limit=1)
+		journal = self.env['account.journal'].search(domain, order='sequence asc', limit=1)
 		if journal and self.journal_id:
 			sequence = journal.sequence
 			journal.write({'sequence': self.journal_id.sequence})
