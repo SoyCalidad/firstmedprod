@@ -72,6 +72,7 @@ class ResConfigSettings(models.TransientModel):
 								name_pro = product.name
 
 							products_list.append([0,0,{'name':name_pro,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.qty_available}])
 					else:
@@ -79,6 +80,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.qty_available < res.min_quantity:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.qty_available}])
 
@@ -100,7 +102,8 @@ class ResConfigSettings(models.TransientModel):
 									name_pro = product.name
 
 								products_list.append([0,0,{'name':name_pro,
-															'limit_quantity':product.min_quantity,
+														'uom_id': product.uom_id.name,
+														'limit_quantity':product.min_quantity,
 														'stock_quantity':product.qty_available}])
 					else:
 						result = self.env['product.template'].search([])
@@ -108,6 +111,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.qty_available < product.temp_min_quantity:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':product.temp_min_quantity,
 													'stock_quantity':product.qty_available}])
 
@@ -127,6 +131,7 @@ class ResConfigSettings(models.TransientModel):
 								else :
 									name_pro = product.name
 								vals = {'name':name_pro,
+										'uom_id': product.uom_id.name,
 										'limit_quantity':product.qty_min,
 										'stock_quantity':product.qty_available}
 
@@ -138,6 +143,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.qty_available < product.temp_qty_min:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':product.temp_qty_min,
 													'stock_quantity':product.qty_available}])
 
@@ -159,6 +165,7 @@ class ResConfigSettings(models.TransientModel):
 								name_pro = product.name
 
 							products_list.append([0,0,{'name':name_pro,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.virtual_available}])
 					else:
@@ -167,6 +174,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.virtual_available < res.min_quantity:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.virtual_available}])
 
@@ -188,7 +196,8 @@ class ResConfigSettings(models.TransientModel):
 								else :
 									name_pro = product.name
 								products_list.append([0,0,{'name':name_pro,
-															'limit_quantity':product.min_quantity,
+														'uom_id': product.uom_id.name,
+														'limit_quantity':product.min_quantity,
 														'stock_quantity':product.virtual_available}])
 					
 					else:
@@ -197,6 +206,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.virtual_available < product.temp_min_quantity:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':product.temp_min_quantity,
 													'stock_quantity':product.virtual_available}])
 
@@ -217,7 +227,8 @@ class ResConfigSettings(models.TransientModel):
 									name_pro = product.name
 
 								products_list.append([0,0,{'name':name_pro,
-															'limit_quantity':product.qty_min,
+														'uom_id': product.uom_id.name,
+														'limit_quantity':product.qty_min,
 														'stock_quantity':product.qty_available}])
 					else:
 						result = self.env['product.template'].search([])
@@ -225,6 +236,7 @@ class ResConfigSettings(models.TransientModel):
 						for product in result:
 							if product.qty_available < product.temp_qty_min:
 								products_list.append([0,0,{'name':product.name,
+													'uom_id': product.uom_id.name,
 													'limit_quantity':product.temp_qty_min,
 													'stock_quantity':product.qty_available}])
 
@@ -261,7 +273,7 @@ class ResConfigSettings(models.TransientModel):
 							values['res_id'] = False
 							pdf = self.env.ref('bi_product_low_stock_notification.action_low_stock_report')._render([res.id])[0]
 							values['attachment_ids'] = [(0,0,{
-								'name': 'Product Low Stock Report',
+								'name': 'Reporte de Stock Mínimo.pdf',
 								'datas': base64.b64encode(pdf),
 								'res_model': res._name,
 								'res_id': res.id,
@@ -285,7 +297,7 @@ class ResConfigSettings(models.TransientModel):
 							values['res_id'] = False
 							pdf = self.env.ref('bi_product_low_stock_notification.action_low_stock_report')._render([res.id])[0]
 							values['attachment_ids'] = [(0,0,{
-								'name': 'Product Low Stock Report',
+								'name': 'Reporte de Stock Mínimo.pdf',
 								'datas': base64.b64encode(pdf),
 								'res_model': res._name,
 								'res_id': res.id,
@@ -305,6 +317,7 @@ class low_stock_product(models.TransientModel):
 	_name='low.stock.transient'
 
 	name=fields.Char(string='Product name')
+	uom_id=fields.Char(string='Product uom')
 	stock_quantity=fields.Float(string='Quantity')
 	limit_quantity=fields.Float(string='Quantity limit')
 	stock_product_id=fields.Many2one('res.config.settings')
