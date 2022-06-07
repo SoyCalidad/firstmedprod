@@ -19,7 +19,7 @@
             <p>La lista de productos que tienen una cantidad de pronóstico menor que la cantidad global ${object.min_quantity} son:</p><br/>
         %endif
         
-        <table border=1>
+        <table border=1 cellspacing=5>
           <tr> 
             <th>Producto</th>
             <th>Categoría</th>
@@ -49,7 +49,7 @@
         %if object.notification_base == 'fore_cast':
            <p>Lista de productos que tienen menos cantidad prevista que la cantidad mínima individual son:</p><br/>
         %endif
-         <table border=1>
+         <table border=1 cellspacing=5>
           <tr>
             <th>Producto</th>
             <th>Categoría</th>
@@ -78,7 +78,7 @@
         %if object.notification_base == 'fore_cast':
            <p>La lista de productos que tienen una cantidad de pronóstico menor que la cantidad mínima individual en las reglas de reorden especificadas son:</p><br/>
         %endif
-         <table border=1>
+         <table border=1 cellspacing=5>
           <tr>
             <th>Producto</th>
             <th>Categoría</th>

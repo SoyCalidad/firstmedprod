@@ -7,7 +7,7 @@
             <div class="page">
                 <center><table><th><h4><b>Reporte de Stock Bajo para Productos</b></h4></th></table></center>
                 <br/><br/>
-                <table width="100%">
+                <table width="100%" cellspacing="5">
                     <thead>
                         <tr style="border: 1px solid black;">
                             <th style="border: 1px solid black;">Producto</th>
