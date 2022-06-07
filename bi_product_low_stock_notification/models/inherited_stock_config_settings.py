@@ -73,6 +73,7 @@ class ResConfigSettings(models.TransientModel):
 
 							products_list.append([0,0,{'name':name_pro,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.qty_available}])
 					else:
@@ -81,6 +82,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.qty_available < res.min_quantity:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.qty_available}])
 
@@ -103,6 +105,7 @@ class ResConfigSettings(models.TransientModel):
 
 								products_list.append([0,0,{'name':name_pro,
 														'uom_id': product.uom_id.name,
+														'category_id': product.categ_id.name,
 														'limit_quantity':product.min_quantity,
 														'stock_quantity':product.qty_available}])
 					else:
@@ -112,6 +115,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.qty_available < product.temp_min_quantity:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':product.temp_min_quantity,
 													'stock_quantity':product.qty_available}])
 
@@ -132,6 +136,7 @@ class ResConfigSettings(models.TransientModel):
 									name_pro = product.name
 								vals = {'name':name_pro,
 										'uom_id': product.uom_id.name,
+										'category_id': product.categ_id.name,
 										'limit_quantity':product.qty_min,
 										'stock_quantity':product.qty_available}
 
@@ -144,6 +149,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.qty_available < product.temp_qty_min:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':product.temp_qty_min,
 													'stock_quantity':product.qty_available}])
 
@@ -166,6 +172,7 @@ class ResConfigSettings(models.TransientModel):
 
 							products_list.append([0,0,{'name':name_pro,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.virtual_available}])
 					else:
@@ -175,6 +182,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.virtual_available < res.min_quantity:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':res.min_quantity,
 													'stock_quantity':product.virtual_available}])
 
@@ -197,6 +205,7 @@ class ResConfigSettings(models.TransientModel):
 									name_pro = product.name
 								products_list.append([0,0,{'name':name_pro,
 														'uom_id': product.uom_id.name,
+														'category_id': product.categ_id.name,
 														'limit_quantity':product.min_quantity,
 														'stock_quantity':product.virtual_available}])
 					
@@ -207,6 +216,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.virtual_available < product.temp_min_quantity:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':product.temp_min_quantity,
 													'stock_quantity':product.virtual_available}])
 
@@ -228,6 +238,7 @@ class ResConfigSettings(models.TransientModel):
 
 								products_list.append([0,0,{'name':name_pro,
 														'uom_id': product.uom_id.name,
+														'category_id': product.categ_id.name,
 														'limit_quantity':product.qty_min,
 														'stock_quantity':product.qty_available}])
 					else:
@@ -237,6 +248,7 @@ class ResConfigSettings(models.TransientModel):
 							if product.qty_available < product.temp_qty_min:
 								products_list.append([0,0,{'name':product.name,
 													'uom_id': product.uom_id.name,
+													'category_id': product.categ_id.name,
 													'limit_quantity':product.temp_qty_min,
 													'stock_quantity':product.qty_available}])
 
@@ -321,4 +333,5 @@ class low_stock_product(models.TransientModel):
 	stock_quantity=fields.Float(string='Quantity')
 	limit_quantity=fields.Float(string='Quantity limit')
 	stock_product_id=fields.Many2one('res.config.settings')
+	category_id=fields.Char(string='Category name')
 
