@@ -55,6 +55,7 @@ class AccountPaymentRegister(models.TransientModel):
 
 		if invoice_lines == order_lines:
 			for i in range(len(invoice_ids)):
+				self.env['sale.order.line'].browse(order_ids[i]).write({'qty_invoiced': self.env['account.move.line'].browse(invoice_ids[i]).quantity})
 				self.env.cr.execute("""insert into sale_order_line_invoice_rel values (%s, %s)""", (str(invoice_ids[i]), str(order_ids[i])))				
 			msg = "Orden de Venta enlaza correctamente"
 		return {
