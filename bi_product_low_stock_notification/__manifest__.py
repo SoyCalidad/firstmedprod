@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 
 {
@@ -62,7 +62,7 @@
 	""",
 	'author':'Browseinfo',
 	'website': 'https://www.browseinfo.in',
-	'depends': ['base','sale_management','stock'],
+	'depends': ['base','sale_management','stock','sale'],
 	'data': [
 	'security/ir.model.access.csv',
 	'view/product_product_view.xml',
@@ -71,7 +71,8 @@
 	'view/stock_config_settings_views.xml',
 	'data/low_stock_notification_cron.xml',
 	'view/inherited_res_users.xml',
-			
+	'report/report.xml',
+	'report/templates.xml'
 	],
 	
 	'test': [],

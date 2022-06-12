@@ -322,3 +322,6 @@ class low_stock_product(models.TransientModel):
 	limit_quantity=fields.Float(string='Quantity limit')
 	stock_product_id=fields.Many2one('res.config.settings')
 
+class report_post_sale(models.Model):
+	_inherit = 'sale.order'
+	#name_2 = fields.Char(String="Nombre del reporte")
