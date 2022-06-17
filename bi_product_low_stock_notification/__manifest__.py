@@ -62,7 +62,7 @@
 	""",
 	'author':'Browseinfo',
 	'website': 'https://www.browseinfo.in',
-	'depends': ['base','sale_management','stock'],
+	'depends': ['base','sale_management','stock','sale','account'],
 	'data': [
 	'security/ir.model.access.csv',
 	'view/product_product_view.xml',
@@ -71,7 +71,8 @@
 	'view/stock_config_settings_views.xml',
 	'data/low_stock_notification_cron.xml',
 	'view/inherited_res_users.xml',
-			
+	'wizard/wizard_report_sale.xml',
+	'view/reporte_de_venta.xml'
 	],
 	
 	'test': [],
@@ -85,5 +86,3 @@
 	'live_test_url':'https://youtu.be/Zphh2zyzluY',
 	"images":['static/description/Banner.png'],
 }
-
-
