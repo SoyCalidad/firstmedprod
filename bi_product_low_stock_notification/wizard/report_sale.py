@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+''' from odoo import fields, models, api
 
 
 class report_pos_sale(models.TransientModel):
@@ -9,3 +9,4 @@ class report_pos_sale(models.TransientModel):
 
 
 #    report_pos_sale_id = fields.Many2one('report.pos.sale')
+ '''

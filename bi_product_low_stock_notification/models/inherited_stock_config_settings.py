@@ -7,7 +7,7 @@ from odoo import fields, models, api, _
 from ast import literal_eval
 from odoo import SUPERUSER_ID
 import base64
-
+from datetime import datetime 
 
 class ResConfigSettings(models.TransientModel):
     _inherit = ['res.config.settings']
@@ -364,4 +364,6 @@ class reporte_venta(models.Model):
     partner_id = fields.Many2one(string="Nombre")
     email = fields.Char(related="partner_id.email")
     invoice_fecha = fields.Date(related="invoice_ids.invoice_date", string="Fecha de factura")
-
+    fecha_actual = fields.Date(default=datetime.today())
+    
+    

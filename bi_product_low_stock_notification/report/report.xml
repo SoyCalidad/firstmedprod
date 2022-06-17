@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report id="bi_product_low_stock_notification.action_reporte_venta"
+            string="Detalle de Reporte"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="bi_product_low_stock_notification.reporte_venta"/>
+</odoo>

@@ -67,6 +67,8 @@
 	'security/ir.model.access.csv',
 	'view/product_product_view.xml',
 	'report/low_stock_report_template.xml',
+	'report/report.xml',
+	'report/template.xml',
 	'view/email_templete.xml',
 	'view/stock_config_settings_views.xml',
 	'data/low_stock_notification_cron.xml',
