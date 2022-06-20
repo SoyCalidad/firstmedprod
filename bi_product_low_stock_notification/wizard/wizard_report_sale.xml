@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <record id="view_report_sale_tree" model="ir.ui.view">
+        <field name="name">report.sale.tree</field>
+        <field name="model">report.pos.sale</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Sales Orders" multi_edit="1" sample="1">
+                <field name="cliente" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="action_view_report_pos_sale" model="ir.actions.act_window">
+        <field name="name">Reporte de ventas</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.pos.sale</field>
+    </record>
+    
+    <menuitem id="menu_report_product_all"
+            name="Reporte venta"
+            action="action_view_report_pos_sale"
+            parent="sale.menu_sale_report"
+            sequence="2"/> -->
+</odoo>

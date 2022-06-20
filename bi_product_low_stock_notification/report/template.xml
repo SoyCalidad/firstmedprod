@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="bi_product_low_stock_notification.reporte_venta">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1>Detalle de Reporte de Venta</h1>
+                    <table class="table table-sm o_main_table">
+                        <thead style="display: table-row-group">
+                            <tr>
+                                <th name="th_fecha_de_pedido" class="text-left">Fecha de Pedido</th>
+                                <th name="th_fecha_de_factura" class="text-left">Fecha de Factura</th>
+                                <th name="th_cliente" class="text-left">Cliente</th>
+                                <th name="th_email" class="text-left">Email</th>
+                                <th name="th_telefono" class="text-left">Telefono</th>
+                                <th name="th_productos" class="text-left">Productos</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="docs" t-as="mov">
+                            <tr>
+                                <td name="td_fecha_de_pedido"><span t-field="mov.date_order"/></td>
+                                <td name="td_fecha_de_factura"><span t-field="mov.invoice_fecha"/></td>
+                                <td name="td_cliente"><span t-field="mov.partner_id.name"/></td>
+                                <td name="td_email"><span t-field="mov.email"/></td>
+                                <td name="td_telefono"><span t-field="mov.phone"/></td>
+                                <t t-foreach="mov.order_line" t-as="line">
+                                    <td name="td_productos"><span t-field="line.product_id"/></td>
+                                    <tr></tr>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td> </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_reporte_de_venta_tree" model="ir.ui.view">
+        <field name="name">reporte.venta.tree</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <tree string="Sales Orders vista">
+                <field name="date_order" optional="show" readonly="1"/>
+                <field name="invoice_fecha" optional="show" readonly="1"/>
+                <field name="partner_id" optional="hide" readonly="1"/>
+                <field name="email" optional="show"/>
+                <field name="phone" optional="show"/>
+                <field name="amount_total" optional="show"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="sale_order_view_search_inherit_quotation" model="ir.ui.view">
+        <field name="name">sale.order.view.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="customer" position="after">
+                <filter name="quince_dias" string="ultimo 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)).strftime('%d/%m/%Y'))]"/>
+            </filter>
+        </field>
+    </record>
+    
+    <record id="action_view_reporte_de_venta" model="ir.actions.act_window">
+        <field name="name">Reporte de ventas</field>
+        <field name="view_mode">tree,form</field>
+        <field name="res_model">sale.order</field>
+        <field name="domain">[('invoice_status','=','invoiced')]</field>
+    </record>
+    
+    <menuitem id="menu_reporte_de_venta"
+            name="Reporte venta vista"
+            action="action_view_reporte_de_venta"
+            parent="sale.menu_sale_report"
+            sequence="3"/>
+</odoo>

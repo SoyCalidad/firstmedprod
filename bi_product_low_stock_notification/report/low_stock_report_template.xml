@@ -34,14 +34,13 @@
     </t>
 </template>
 
-<report 
-    id="action_low_stock_report"
-    string="Reporte de Stock Mínimo"
-    model="res.config.settings" 
-    report_type="qweb-pdf"
-    file="bi_product_low_stock_notification.low_stock_template" 
-    name="bi_product_low_stock_notification.low_stock_template" 
-/>
+<record id="action_low_stock_report" model="ir.actions.report">
+    <field name="name">Reporte de Stock Mínimo</field>
+    <field name="model">res.config.settings</field>
+    <field name="report_type">qweb-pdf</field>
+    <field name="report_file">bi_product_low_stock_notification.low_stock_template</field>
+    <field name="report_name">bi_product_low_stock_notification.low_stock_template</field>
+</record>
 
 </data>
 </odoo>
