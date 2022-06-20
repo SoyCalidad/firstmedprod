@@ -80,14 +80,6 @@ class StockMove(models.Model):
 		res = super(StockMove, self)._action_done(cancel_backorder)
 		_logger.info("Print ---------------->")
 		for r in self:
-			# location = r.location_dest_id or r.location_id  or False
-			# pick = r.picking_id
-			# if pick:
-			# 	if pick.picking_type_code in ('incoming', 'internal'):
-			# 		location = r.location_dest_id
-			# 	else:
-			# 		location = r.location_id
-			# _logger.info(location)
 			locations = [r.location_dest_id, r.location_id]
 			for location in locations:
 				if location.usage == 'internal':
