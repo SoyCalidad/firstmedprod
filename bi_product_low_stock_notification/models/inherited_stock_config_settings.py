@@ -346,12 +346,14 @@ class ResConfigSettings(models.TransientModel):
 
 
 class low_stock_product(models.TransientModel):
-    _name = 'low.stock.transient'
-    name = fields.Char(string='Product name')
-    uom_id = fields.Char(string='Product uom')
-    stock_quantity = fields.Float(string='Quantity')
-    limit_quantity = fields.Float(string='Quantity limit')
-    stock_product_id = fields.Many2one('res.config.settings')
+	_name='low.stock.transient'
+
+	name=fields.Char(string='Product name')
+	uom_id=fields.Char(string='Product uom')
+	stock_quantity=fields.Float(string='Quantity')
+	limit_quantity=fields.Float(string='Quantity limit')
+	stock_product_id=fields.Many2one('res.config.settings')
+	category_id=fields.Char(string='Category name')
 
 class reporte_venta(models.Model):
     #    _name = "reporte.de.venta"
@@ -365,5 +367,3 @@ class reporte_venta(models.Model):
     email = fields.Char(related="partner_id.email")
     invoice_fecha = fields.Date(related="invoice_ids.invoice_date", string="Fecha de factura")
     fecha_actual = fields.Date(default=datetime.today())
-    
-    
