@@ -90,7 +90,7 @@ class StockMove(models.Model):
 						'almacen-ubicacion': location.complete_name if location else False,
 						'tipo': r.picking_type_id.name if r.picking_type_id else 'Ajuste de inventario',
 						'stock': sq[-1].quantity if sq else 0.0,
-						'available_stock': sq[-1].available_quantity if sq else 0.0,
+						'available_stock': r.product_id.qty_available or 0.0,
 						'consumo': r.quantity_done,
 						'fecha_modificacion': r.write_date - timedelta(hours=5),
 					}
