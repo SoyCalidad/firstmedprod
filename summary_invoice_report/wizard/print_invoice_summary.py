@@ -173,6 +173,7 @@ class PrintInvoiceSummary(models.TransientModel):
 				worksheet.write(row, 7, invoice.amount_total_signed, column_info_style)
 
 				total_payment = 0.0
+				total_credit = 0.0
 				if payments:
 					for payment in payments: 
 						worksheet.write(row, 8, payment.amount if payment and payment.journal_id.type == 'cash' else 0.0, column_info_style)
@@ -188,6 +189,7 @@ class PrintInvoiceSummary(models.TransientModel):
 						row += 1
 				else:
 					credit = abs(invoice.amount_total_signed) - total_payment
+					total_credit += credit
 					worksheet.write(row, 8, 0.00, column_info_style)
 					worksheet.write(row, 9, credit, column_info_style)
 					worksheet.write(row, 10, 0.00, column_info_style)
