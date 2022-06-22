@@ -38,6 +38,8 @@ class InvoiceReportXls(models.AbstractModel):
             {'font_size': 10, 'align': 'center', 'bold': True, 'fg_color': '#68a3fc'})
         format21_green = workbook.add_format(
             {'font_size': 10, 'align': 'center', 'bold': True, 'fg_color': '#85de8e'})
+        format21_yellow = workbook.add_format(
+            {'font_size': 10, 'align': 'center', 'bold': True, 'fg_color': '#FFFF00'})
 
         font_size_8_c = workbook.add_format(
             {'font_size': 8, 'align': 'center'})
@@ -122,9 +124,6 @@ class InvoiceReportXls(models.AbstractModel):
             ('company_id', '=', lines.company_id.id),
         ], order="invoice_date asc")
 
-        print (lines.company_id.id)
-
-        print(invoices)
 
         # Data Render
 
@@ -160,24 +159,27 @@ class InvoiceReportXls(models.AbstractModel):
                     refund_serie = refund_number = '-'
             igv = 0.0
             isc = 0.0
+            current_cell_format = format21_yellow if invoice.state == 'cancel' else font_size_8_c
             # for tax_line in invoice.tax_line_ids:
             #     igv += tax_line.amount if 'IGV' in tax_line.name else 0.0
             #     isc += tax_line.amount if 'ISC' in tax_line.name else 0.0
             invoice_date = invoice.invoice_date.strftime('%d/%m/%Y') if invoice.invoice_date else ''
             invoice_date_due = invoice.invoice_date_due.strftime('%d/%m/%Y') if invoice.invoice_date_due else ''
-            sheet.write(entrie_row, 0, invoice.id, font_size_8_c)
-            sheet.write(entrie_row, 1, invoice_date, font_size_8_c)
-            sheet.write(entrie_row, 2, invoice_date_due, font_size_8_c)
-            sheet.write(entrie_row, 3, invoice.l10n_latam_document_type_id.name, font_size_8_c)
-            sheet.write(entrie_row, 4, serie, font_size_8_c)
-            sheet.write(entrie_row, 5, numero, font_size_8_c)
+            sheet.write(entrie_row, 0, invoice.id, current_cell_format)
+            sheet.write(entrie_row, 1, invoice_date, current_cell_format)
+            sheet.write(entrie_row, 2, invoice_date_due, current_cell_format)
+            sheet.write(entrie_row, 3, invoice.l10n_latam_document_type_id.name, current_cell_format)
+            sheet.write(entrie_row, 4, serie, current_cell_format)
+            sheet.write(entrie_row, 5, numero, current_cell_format)
             sheet.write(entrie_row, 6,
-                        invoice.partner_id.l10n_latam_identification_type_id.name, font_size_8_c)
-            sheet.write(entrie_row, 7, invoice.partner_id.vat, font_size_8_c)
-            sheet.write(entrie_row, 8, invoice.partner_id.name, font_size_8_c)
-            sheet.write(entrie_row, 9, '', font_size_8_c)
+                        invoice.partner_id.l10n_latam_identification_type_id.name, current_cell_format)
+            sheet.write(entrie_row, 7, invoice.partner_id.vat, current_cell_format)
+            sheet.write(entrie_row, 8, invoice.partner_id.name, current_cell_format)
+            sheet.write(entrie_row, 9, '', current_cell_format)
             if invoice.move_type == 'out_refund':
                 multiplier = -1
+            elif invoice.state == 'cancel':
+                multiplier = 0
             else:
                 multiplier = 1
             
@@ -185,19 +187,19 @@ class InvoiceReportXls(models.AbstractModel):
             l10n_pe_edi_amount_isc = invoice.l10n_pe_edi_amount_isc * multiplier
             l10n_pe_edi_amount_igv = invoice.l10n_pe_edi_amount_igv * multiplier
             amount_total = invoice.amount_total * multiplier
-            sheet.write(entrie_row, 10, amount_untaxed, font_size_8_c)
-            sheet.write(entrie_row, 11, '0.0', font_size_8_c)
-            sheet.write(entrie_row, 12, '0.0', font_size_8_c)
-            sheet.write(entrie_row, 13, l10n_pe_edi_amount_isc, font_size_8_c)
-            sheet.write(entrie_row, 14, l10n_pe_edi_amount_igv, font_size_8_c)
-            sheet.write(entrie_row, 15, '0.0', font_size_8_c)
-            sheet.write(entrie_row, 16, amount_total, font_size_8_c)
-            sheet.write(entrie_row, 17, res, font_size_8_c)
-            sheet.write(entrie_row, 18, refund_date, font_size_8_c)
+            sheet.write(entrie_row, 10, amount_untaxed, current_cell_format)
+            sheet.write(entrie_row, 11, '0.0', current_cell_format)
+            sheet.write(entrie_row, 12, '0.0', current_cell_format)
+            sheet.write(entrie_row, 13, l10n_pe_edi_amount_isc, current_cell_format)
+            sheet.write(entrie_row, 14, l10n_pe_edi_amount_igv, current_cell_format)
+            sheet.write(entrie_row, 15, '0.0', current_cell_format)
+            sheet.write(entrie_row, 16, amount_total, current_cell_format)
+            sheet.write(entrie_row, 17, res, current_cell_format)
+            sheet.write(entrie_row, 18, refund_date, current_cell_format)
             sheet.write(entrie_row, 19,
-                        refund_document_type_code, font_size_8_c)
-            sheet.write(entrie_row, 20, refund_serie, font_size_8_c)
-            sheet.write(entrie_row, 21, refund_number, font_size_8_c)
+                        refund_document_type_code, current_cell_format)
+            sheet.write(entrie_row, 20, refund_serie, current_cell_format)
+            sheet.write(entrie_row, 21, refund_number, current_cell_format)
             entrie_row += 1
 
         # Format
