@@ -127,6 +127,7 @@ class PrintInvoiceSummary(models.TransientModel):
 				domain +=[('partner_id', '=', self.partner_id.id)]
 
 			invoice_objs = self.env['account.move'].search(domain)
+			total_credit = 0.0 
 			amount_tot_8 = amount_tot_9 = amount_tot_10 = amount_tot_11 = amount_tot_12 = amount_tot_13 = amount_tot_14 = amount_tot_15 = amount_tot_16 = 0.0
 			index = 1
 			for invoice in invoice_objs:
@@ -174,7 +175,6 @@ class PrintInvoiceSummary(models.TransientModel):
 				amount_tot_9 += invoice.amount_total_signed
 
 				total_payment = 0.0
-				total_credit = 0.0
 				if payments:
 					for payment in payments: 
 						worksheet.write(row, 8, payment.amount if payment and payment.journal_id.type == 'cash' else 0.0, column_info_style)
