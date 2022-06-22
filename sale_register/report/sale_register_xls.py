@@ -118,7 +118,7 @@ class InvoiceReportXls(models.AbstractModel):
             ('move_type', 'in', ['out_invoice', 'out_refund']),
             ('invoice_date', '>=', init_date),
             ('invoice_date', '<=', end_date),
-            ('state', '=', 'posted'),
+            ('state', 'in', 'posted', 'cancel'),
             ('company_id', '=', lines.company_id.id),
         ], order="invoice_date asc")
 
