@@ -39,7 +39,7 @@ class InvoiceReportXls(models.AbstractModel):
         format21_green = workbook.add_format(
             {'font_size': 10, 'align': 'center', 'bold': True, 'fg_color': '#85de8e'})
         format21_yellow = workbook.add_format(
-            {'font_size': 10, 'align': 'center', 'bold': True, 'fg_color': '#FFFF00'})
+            {'font_size': 8, 'align': 'center', 'fg_color': '#FFFF00'})
 
         font_size_8_c = workbook.add_format(
             {'font_size': 8, 'align': 'center'})
