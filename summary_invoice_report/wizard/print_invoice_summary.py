@@ -306,16 +306,16 @@ class PrintInvoiceSummary(models.TransientModel):
 		self.amount_total_debit = 0
 		self.amount_total_credit = 0
 
-		self.amount_total_debit = sum(self.invoice_objs.mapped('amount_total_debit'))
-		self.amount_total_credit = sum(self.invoice_objs.mapped('amount_total_credit'))
+		""" self.amount_total_debit = sum(self.invoice_objs.mapped('amount_total'))
+		self.amount_total_credit = sum(self.invoice_objs.mapped('amount_total')) """
 		
-		""" for invoice in self.invoice_objs:
+		for invoice in self.invoice_objs:
 			
 			if invoice.move_type != 'out_refund':
 				self.amount_total_debit += invoice.amount_total
 			else:
 				self.amount_total_credit += invoice.amount_total
- """
+
 		xml_id = 'summary_invoice_report.action_report_invoice_summary'
 		res = self.env.ref(xml_id).report_action(self.ids, None)
 		res['id'] = self.env.ref(xml_id).id
