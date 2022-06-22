@@ -171,6 +171,7 @@ class PrintInvoiceSummary(models.TransientModel):
 				worksheet.write(row, 5, invoice.partner_id.vat and invoice.partner_id.vat if invoice.partner_id else "", column_info_style)
 				worksheet.write(row, 6, invoice.partner_id.name if invoice.partner_id else '', column_info_style)
 				worksheet.write(row, 7, invoice.amount_total_signed, column_info_style)
+				amount_tot_9 += invoice.amount_total_signed
 
 				total_payment = 0.0
 				total_credit = 0.0
@@ -183,7 +184,6 @@ class PrintInvoiceSummary(models.TransientModel):
 						worksheet.write(row, 12, payment.ref if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
 						worksheet.write(row, 13, payment.date.strftime('%d/%m/%Y') if payment and payment.journal_id.type == 'bank' else "/ /", column_info_style)
 						total_payment += payment.amount
-						amount_tot_9 += invoice.amount_total_signed
 						amount_tot_10 += payment.amount if payment and payment.journal_id.type == 'cash' else 0.0
 						amount_tot_11 += payment.amount if payment and payment.journal_id.type == 'bank' else 0.0
 						row += 1
@@ -226,7 +226,7 @@ class PrintInvoiceSummary(models.TransientModel):
 			# worksheet.write(row, 6, '', easyxf('font:height 200;font:bold True;' "borders: top thin,bottom thin,left thin,right thin"))
 			worksheet.write(row, 7, amount_tot_9, column_info_style)
 			worksheet.write(row, 8, amount_tot_10, column_info_style)
-			worksheet.write(row, 9, 0.00, column_info_style)
+			worksheet.write(row, 9, total_credit, column_info_style)
 			worksheet.write(row, 10, amount_tot_11, column_info_style)
 			# worksheet.write(row, 11, amount_tot_11, easyxf('font:height 200;font:bold True;' "borders: top thin,bottom thin,left thin,right thin"))
 			# worksheet.write(row, 12, amount_tot_12, easyxf('font:height 200;font:bold True;' "borders: top thin,bottom thin,left thin,right thin"))
