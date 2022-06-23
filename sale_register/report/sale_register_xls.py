@@ -59,7 +59,9 @@ class InvoiceReportXls(models.AbstractModel):
 
         sheet.merge_range(0, 0, 0, 1, 'REGISTRO DE VENTAS', format21_left)
         sheet.write(2, 0, 'PERIODO', format21_left)
-        sheet.write(2, 1, lines.month + '/' + lines.year, format21_left)
+        month = lines.month or ''
+        year = lines.year or ''
+        sheet.write(2, 1, month + '/' + year, format21_left)
         sheet.write(3, 0, 'RUC', format21_left)
         sheet.write(3, 1, lines.company_id.vat, format21_left)
         sheet.write(4, 0, 'RAZÓN SOCIAL', format21_left)
