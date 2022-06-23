@@ -171,10 +171,12 @@ class InvoiceReportXls(models.AbstractModel):
             sheet.write(entrie_row, 3, invoice.l10n_latam_document_type_id.name, current_cell_format)
             sheet.write(entrie_row, 4, serie, current_cell_format)
             sheet.write(entrie_row, 5, numero, current_cell_format)
-            sheet.write(entrie_row, 6,
-                        invoice.partner_id.l10n_latam_identification_type_id.name, current_cell_format)
-            sheet.write(entrie_row, 7, invoice.partner_id.vat, current_cell_format)
-            sheet.write(entrie_row, 8, invoice.partner_id.name, current_cell_format)
+            partner_name = invoice.partner_id.name if invoice.state == 'posted' else 'COMPROBANTE ANULADO'
+            partner_identification_type = invoice.partner_id.l10n_latam_identification_type_id.name if invoice.state == 'posted' else '0'
+            partner_vat = invoice.partner_id.vat if invoice.state == 'posted' else '0'
+            sheet.write(entrie_row, 6, partner_identification_type, current_cell_format)
+            sheet.write(entrie_row, 7, partner_vat, current_cell_format)
+            sheet.write(entrie_row, 8, partner_name, current_cell_format)
             sheet.write(entrie_row, 9, '', current_cell_format)
             if invoice.move_type == 'out_refund':
                 multiplier = -1
