@@ -33,7 +33,7 @@
           
           <tr>
           <td>${product.name}</td>
-          <td>${product.categ_id.name}</td>
+          <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
           <td>${product.stock_quantity}</td>
           <td>${object.min_quantity - product.stock_quantity}</td>
@@ -61,7 +61,7 @@
            %for product in object.low_stock_products_ids:
           <tr>
           <td>${product.name}</td>
-          <td>${product.categ_id.name}</td>
+          <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
           <td>${product.limit_quantity}</td>
           <td>${product.stock_quantity}</td>
@@ -90,7 +90,7 @@
            %for product in object.low_stock_products_ids:
           <tr>
           <td>${product.name}</td>
-          <td>${product.categ_id.name}</td>
+          <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
           <td>${product.limit_quantity}</td>
           <td>${product.stock_quantity}</td>
