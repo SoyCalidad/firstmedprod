@@ -296,8 +296,8 @@ class ResConfigSettings(models.TransientModel):
                             values = email_template_obj.generate_email(
                                 res.id, ['subject', 'body_html', 'email_from', 'email_to', 'partner_to', 'email_cc', 'reply_to', 'scheduled_date'])
                             values['email_from'] = current_user.email
-                            values['email_to'] = 'l.a.vargas.molina@gmail.com,maqh777@gmail.com'
-                            # values['email_cc'] = company_is.email_cc
+                            values['email_to'] = 'l.a.vargas.molina@gmail.com'#company_is.email
+                            #values['email_cc'] = company_is.email_cc
                             values['author_id'] = current_user.partner_id.id
                             values['res_id'] = False
                             pdf = self.env.ref(
