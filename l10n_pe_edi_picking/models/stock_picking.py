@@ -86,6 +86,15 @@ class StockPicking(models.Model):
     def _compute_l10n_pe_edi_picking_partner(self):
         for rec in self:
             rec.l10n_pe_edi_picking_partner_id = rec.partner_id.commercial_partner_id
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        if self.partner_id:
+            self.l10n_pe_edi_picking_arrival_point_state_id = self.partner_id.state_id.id
+            self.l10n_pe_edi_picking_arrival_point_province_id = self.partner_id.city_id.id
+            self.l10n_pe_edi_picking_arrival_point_district_id = self.partner_id.l10n_pe_district.id
+            self.l10n_pe_edi_picking_arrival_point_ubigeo = self.partner_id.zip
+            self.l10n_pe_edi_picking_arrival_point_street = self.partner_id.street_name
     
     @api.onchange('l10n_pe_edi_picking_starting_point_id')
     def _onchange_starting_point(self):
