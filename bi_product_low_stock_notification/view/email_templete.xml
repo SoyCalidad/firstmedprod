@@ -33,7 +33,7 @@
           
           <tr>
           <td>${product.name}</td>
-          <td>${product.category_id}</td>
+          <td>${product.categ_id}</td>
           <td>${product.uom_id}</td>
           <td>${product.stock_quantity}</td>
           <td>${object.min_quantity - product.stock_quantity}</td>
