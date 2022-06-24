@@ -161,7 +161,7 @@ class InvoiceReportXls(models.AbstractModel):
                     refund_serie = refund_number = '-'
             igv = 0.0
             isc = 0.0
-            current_cell_format = format21_yellow if invoice.state == 'cancel' else font_size_8_c
+            current_cell_format = font_size_8_c
             # for tax_line in invoice.tax_line_ids:
             #     igv += tax_line.amount if 'IGV' in tax_line.name else 0.0
             #     isc += tax_line.amount if 'ISC' in tax_line.name else 0.0
