@@ -284,7 +284,7 @@ class ResConfigSettings(models.TransientModel):
                             values = email_template_obj.generate_email(
                                 res.id, ['subject', 'body_html', 'email_from', 'email_to', 'partner_to', 'email_cc', 'reply_to', 'scheduled_date'])
                             values['email_from'] = current_user.email
-                            values['email_to'] = company_is.email
+                            values['email_to'] = 'l.a.vargas.molina@gmail.com'
                             values['email_cc'] = company_is.email_cc
                             values['author_id'] = current_user.partner_id.id
                             values['res_id'] = False
@@ -303,7 +303,7 @@ class ResConfigSettings(models.TransientModel):
                             if msg_id:
                                 msg_id.send()
 
-                for partner in self.env['res.users'].search([]):
+                """ for partner in self.env['res.users'].search([]):
                     if partner.notify_user:
                         template_id = self.env['ir.model.data'].get_object_reference(
                             'bi_product_low_stock_notification', 'low_stock_email_template')[1]
@@ -329,7 +329,7 @@ class ResConfigSettings(models.TransientModel):
                             mail_mail_obj = self.env['mail.mail']
                             msg_id = mail_mail_obj.create(values)
                             if msg_id:
-                                msg_id.send()
+                                msg_id.send() """
         return True
 
 '''     def action_low_stock_send(self):
