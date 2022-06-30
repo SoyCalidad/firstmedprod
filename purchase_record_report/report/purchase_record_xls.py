@@ -134,7 +134,7 @@ class InvoiceReportXls(models.AbstractModel):
         end_date = datetime(year, month, days[1])
 
         invoices = self.env['account.move'].search([
-            ('type', 'in', ('in_invoice', 'in_refund')),
+            ('move_type', 'in', ('in_invoice', 'in_refund')),
             ('date', '>=', init_date),
             ('date', '<=', end_date),
             ('state', 'in', ['posted', 'cancel']),
