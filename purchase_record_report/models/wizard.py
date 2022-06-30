@@ -61,4 +61,4 @@ class PurchaseReport(models.TransientModel):
             if isinstance(datas['form'][field], tuple):
                 datas['form'][field] = datas['form'][field][0]
         if context.get('xls_export'):
-            return self.env.ref('purchase_report_sunat_xls.purchase_record_xlsx').report_action(self, data=datas)
+            return self.env.ref('purchase_record_report.purchase_record_xlsx').report_action(self, data=datas)
