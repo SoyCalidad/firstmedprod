@@ -18,5 +18,4 @@
     "currency": 'PEN',
     'images': [],
     'license': 'LGPL-3',
-    'support': 'desarrollo@holalciente.com'
 }
