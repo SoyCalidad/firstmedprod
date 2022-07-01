@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Tabla 11: Código de la ADUANA -->
+        <record id="c11_019" model="sunat.chart.11">
+            <field name="code">019</field>
+            <field name="description">Tumbes</field>
+        </record>
+        <record id="c11_028" model="sunat.chart.11">
+            <field name="code">028</field>
+            <field name="description">Talara</field>
+        </record>
+        <record id="c11_046" model="sunat.chart.11">
+            <field name="code">046</field>
+            <field name="description">Paita</field>
+        </record>
+        <record id="c11_055" model="sunat.chart.11">
+            <field name="code">055</field>
+            <field name="description">Chiclayo</field>
+        </record>
+        <record id="c11_082" model="sunat.chart.11">
+            <field name="code">082</field>
+            <field name="description">Salaverry</field>
+        </record>
+        <record id="c11_091" model="sunat.chart.11">
+            <field name="code">091</field>
+            <field name="description">Chimbote</field>
+        </record>
+        <record id="c11_118" model="sunat.chart.11">
+            <field name="code">118</field>
+            <field name="description">Marítima del Callao</field>
+        </record>
+        <record id="c11_127" model="sunat.chart.11">
+            <field name="code">127</field>
+            <field name="description">Pisco</field>
+        </record>
+        <record id="c11_145" model="sunat.chart.11">
+            <field name="code">145</field>
+            <field name="description">Mollendo Matarani</field>
+        </record>
+        <record id="c11_154" model="sunat.chart.11">
+            <field name="code">154</field>
+            <field name="description">Arequipa</field>
+        </record>
+        <record id="c11_162" model="sunat.chart.11">
+            <field name="code">163</field>
+            <field name="description">Ilo</field>
+        </record>
+        <record id="c11_172" model="sunat.chart.11">
+            <field name="code">172</field>
+            <field name="description">Tacna</field>
+        </record>
+        <record id="c11_181" model="sunat.chart.11">
+            <field name="code">181</field>
+            <field name="description">Puno</field>
+        </record>
+        <record id="c11_190" model="sunat.chart.11">
+            <field name="code">190</field>
+            <field name="description">Cuzco</field>
+        </record>
+        <record id="c11_217" model="sunat.chart.11">
+            <field name="code">217</field>
+            <field name="description">Pucallpa</field>
+        </record>
+        <record id="c11_226" model="sunat.chart.11">
+            <field name="code">226</field>
+            <field name="description">Iquitos</field>
+        </record>
+        <record id="c11_235" model="sunat.chart.11">
+            <field name="code">235</field>
+            <field name="description">Área del Callao</field>
+        </record>
+        <record id="c11_244" model="sunat.chart.11">
+            <field name="code">244</field>
+            <field name="description">Postal de Lima</field>
+        </record>
+        <record id="c11_262" model="sunat.chart.11">
+            <field name="code">262</field>
+            <field name="description">Desaguadero</field>
+        </record>
+        <record id="c11_271" model="sunat.chart.11">
+            <field name="code">271</field>
+            <field name="description">Tarapoto</field>
+        </record>
+        <record id="c11_280" model="sunat.chart.11">
+            <field name="code">280</field>
+            <field name="description">Puerto Maldonado</field>
+        </record>
+        <record id="c11_299" model="sunat.chart.11">
+            <field name="code">299</field>
+            <field name="description">La Tina</field>
+        </record>
+        <record id="c11_884" model="sunat.chart.11">
+            <field name="code">884</field>
+            <field name="description">Dependencia Ferroviaria Tacna</field>
+        </record>
+        <record id="c11_893" model="sunat.chart.11">
+            <field name="code">893</field>
+            <field name="description">Dependencia Postal Tacna</field>
+        </record>
+        <record id="c11_910" model="sunat.chart.11">
+            <field name="code">910</field>
+            <field name="description">Dependencia Postal Arequipa</field>
+        </record>
+        <record id="c11_929" model="sunat.chart.11">
+            <field name="code">929</field>
+            <field name="description">Complejo Fronterizo Sta Rosa Tacna</field>
+        </record>
+        <record id="c11_938" model="sunat.chart.11">
+            <field name="code">938</field>
+            <field name="description">Terminal Terrestre Tacna</field>
+        </record>
+        <record id="c11_947" model="sunat.chart.11">
+            <field name="code">947</field>
+            <field name="description">Aeropuerto Tacna</field>
+        </record>
+        <record id="c11_956" model="sunat.chart.11">
+            <field name="code">956</field>
+            <field name="description">Ceticos Tacna</field>
+        </record>
+        <record id="c11_965" model="sunat.chart.11">
+            <field name="code">965</field>
+            <field name="description">Dependencia Postal de Salaverry</field>
+        </record>
+
+    </data>
+</odoo>

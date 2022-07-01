@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record model='ir.ui.view' id='wizard_account_form'>
+        <field name="name">wizard.account.history.form</field>
+        <field name="model">wizard.account.history</field>
+        <field name="arch" type="xml">
+            <form string="Wizard">
+                <group>
+                    <field name="company_id"/>
+                    <field name="type_report" invisible="1"/>
+                </group>
+                <group string="Fechas" col="4">
+                    <field name="month" />
+                    <field name="year" />
+                </group>
+                <footer>
+                    <button name="export_xls" type="object" default_focus="1"
+                            string="Exportar Reporte Excel" class="oe_highlight"
+                            context="{'xls_export':1}" icon="fa-download"/>
+                    <button string="Cancelar" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--Compras-->
+    <record model='ir.actions.act_window' id='wizard_act_wizard_account_purchase_form'>
+        <field name="name">Registro de compras (Formato SUNAT)</field>
+        <field name="res_model">wizard.account.history</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_account_form"/>
+        <field name="context">{'default_type_report':'purchase'}</field>
+        <field name="target">new</field>
+    </record>
+
+    <report
+        id="purchase_record_xlsx" model="wizard.account.history"
+        string="Registro de compras (Formato SUNAT)"
+        report_type="xlsx"
+        name="purchase_report_sunat_xls.xlsx"
+        file="Registro de compras (Formato SUNAT)"
+        menu="False"
+        attachment_use="False"/>
+
+    <menuitem name="Reporte de compras (Formato SUNAT)" parent="account.menu_finance_reports"
+                id="export_excel_account_purchase" action="wizard_act_wizard_account_purchase_form" sequence="11"/>
+
+</odoo>

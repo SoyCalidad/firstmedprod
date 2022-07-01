@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_register_report_all,Todos los permisos,model_sale_register_report,account.group_account_manager,1,1,1,1
+
+access_purchase_register_report_all,Todos los permisos,model_purchase_register_report,account.group_account_manager,1,1,1,1
+

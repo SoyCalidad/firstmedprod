@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_register_report_view_graph" model="ir.ui.view">
+        <field name="name">purchase.register.report.graph</field>
+        <field name="model">purchase.register.report</field>
+        <field name="arch" type="xml">
+            <graph string="Registro de Compras" stacked="True">
+                <field name="partner_id" type="col"/>
+                <field name="date" interval="month" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="purchase_register_report_view_pivot" model="ir.ui.view">
+        <field name="name">purchase.register.report.pivot</field>
+        <field name="model">purchase.register.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Registro de Compras" disable_linking="True">
+                <field name="name" type="col"/>
+                <field name="date" interval="month" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="purchase_register_report_view_tree" model="ir.ui.view">
+        <field name="name">purchase.register.report.search</field>
+        <field name="model">purchase.register.report</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="date_due"/>
+                <field name="type_document_id"/>
+                <field name="vat"/>
+                <field name="l_name"/>
+                <field name="reversed_entry_id"/>
+                <field name="amount_untaxed" sum="Total Base Imponible"/>
+                <field name="amount_tax" sum="Total Impuesto"/>
+                <field name="amount_total" sum="Monto Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_report_view_search" model="ir.ui.view">
+        <field name="name">purchase.register.report.search</field>
+        <field name="model">purchase.register.report</field>
+        <field name="arch" type="xml">
+            <search string="Análisis de Compras">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="date_due"/>
+                <field name="catalog_06_id"/>
+                <field name="vat"/>
+                <field name="l_name"/>
+                <field name="reversed_entry_id"/>
+                <group expand="1" string="Group By">
+                    <filter string="Cliente" name="group_by_partner" context="{'group_by':'partner_id'}"/>
+                    <filter string="Tipo de Documento" name="group_by_document_type" context="{'group_by':'type_document_id'}"/>
+                    <filter string="Mes" context="{'group_by':'date:month'}" name="group_by_invoice_month"/>
+                    <filter string="Mes de Vencimiento" context="{'group_by':'date_due:month'}" name="group_by_due_month"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="purchase_register_report_action" model="ir.actions.act_window">
+        <field name="name">Registro de Compras</field>
+        <field name="res_model">purchase.register.report</field>
+        
+        <field name="view_mode">tree,graph</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem id="purchase_register_report_menu" name="Reporte Registro de Compras" groups="sales_team.group_sale_manager" parent="financial_state_report.menu_financial_report" action="purchase_register_report_action" sequence="6"/>
+
+    <record id="purchase_register_report_action_team" model="ir.actions.act_window">
+        <field name="name">Registro de Compras</field>
+        <field name="res_model">purchase.register.report</field>
+        
+        <field name="view_mode">tree,graph</field>
+        <field name="domain">[]</field>
+    </record>
+
+</odoo>

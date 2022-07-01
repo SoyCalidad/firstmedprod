@@ -1,0 +1,15 @@
+<odoo>
+
+    <record id="account_year_supplier_inherit" model="ir.ui.view">
+        <field name="name">account.move.chart11</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="invoice_date_due" position="after">
+                <field name = "dua_year" />
+                <field name = "customs_dependency" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

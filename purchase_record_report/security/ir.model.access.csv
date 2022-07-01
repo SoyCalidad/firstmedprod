@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_account_history_all,Todos los permisos,model_wizard_account_history,account.group_account_manager,1,1,1,1
+access_report_purchase_report_sunat_xls_xlsx_all,Todos los permisos,model_report_purchase_report_sunat_xls_xlsx,account.group_account_manager,1,1,1,1
+access_sunat_chart_11,purchase_record_report.sunat_chart_11,model_sunat_chart_11,base.group_user,1,1,1,1

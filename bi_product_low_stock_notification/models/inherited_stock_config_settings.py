@@ -287,13 +287,11 @@ class ResConfigSettings(models.TransientModel):
             if res.low_stock_products_ids:
                 if company:
                     for company_is in company:
-
                         template_id = self.env['ir.model.data'].get_object_reference(
                             'bi_product_low_stock_notification', 'low_stock_email_template')[1]
                         email_template_obj = self.env['mail.template'].browse(
                             template_id)
                         if template_id:
-
                             values = email_template_obj.generate_email(
                                 res.id, ['subject', 'body_html', 'email_from', 'email_to', 'partner_to', 'email_cc', 'reply_to', 'scheduled_date'])
                             values['email_from'] = current_user.email
