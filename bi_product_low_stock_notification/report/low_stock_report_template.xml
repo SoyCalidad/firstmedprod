@@ -16,6 +16,7 @@
                             <th style="border: 1px solid black;">Stock Minimo</th>
                             <th style="border: 1px solid black;">Stock Actual</th>
                             <th style="border: 1px solid black;">Cantidad Requerida</th>
+                            <th style="border: 1px solid black;">Cantidad Pedida</th>
                         </tr>
                     </thead>
                     <t t-foreach="rec_ids" t-as="o">

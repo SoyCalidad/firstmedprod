@@ -14,6 +14,7 @@
                                 <th name="th_email" class="text-left">Email</th>
                                 <th name="th_telefono" class="text-left">Telefono</th>
                                 <th name="th_productos" class="text-left">Productos</th>
+                                <th name="th_cantidad" class="text-left">Cantidad</th>
                             </tr>
                         </thead>
                         <t t-foreach="docs" t-as="mov">
@@ -25,6 +26,7 @@
                                 <td name="td_telefono"><span t-field="mov.phone"/></td>
                                 <t t-foreach="mov.order_line" t-as="line">
                                     <td name="td_productos"><span t-field="line.product_id"/></td>
+                                    <td name="td_cantidad"><span t-field="line.product_uom_qty"/></td>
                                     <tr></tr>
                                     <td> </td>
                                     <td> </td>

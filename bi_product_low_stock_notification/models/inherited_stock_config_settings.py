@@ -7,7 +7,8 @@ from odoo import fields, models, api, _
 from ast import literal_eval
 from odoo import SUPERUSER_ID
 import base64
-from datetime import datetime 
+from datetime import datetime
+
 
 class ResConfigSettings(models.TransientModel):
     _inherit = ['res.config.settings']
@@ -296,8 +297,8 @@ class ResConfigSettings(models.TransientModel):
                             values = email_template_obj.generate_email(
                                 res.id, ['subject', 'body_html', 'email_from', 'email_to', 'partner_to', 'email_cc', 'reply_to', 'scheduled_date'])
                             values['email_from'] = current_user.email
-                            values['email_to'] = company_is.email
-                            values['email_cc'] = company_is.email_cc
+                            values['email_to'] = 'efigueroac@uni.pe'
+                            # values['email_cc'] = company_is.email_cc
                             values['author_id'] = current_user.partner_id.id
                             values['res_id'] = False
                             pdf = self.env.ref(
@@ -315,7 +316,7 @@ class ResConfigSettings(models.TransientModel):
                             if msg_id:
                                 msg_id.send()
 
-                for partner in self.env['res.users'].search([]):
+                ''' for partner in self.env['res.users'].search([]):
                     if partner.notify_user:
                         template_id = self.env['ir.model.data'].get_object_reference(
                             'bi_product_low_stock_notification', 'low_stock_email_template')[1]
@@ -341,8 +342,9 @@ class ResConfigSettings(models.TransientModel):
                             mail_mail_obj = self.env['mail.mail']
                             msg_id = mail_mail_obj.create(values)
                             if msg_id:
-                                msg_id.send()
+                                msg_id.send() '''
         return True
+
 
 '''     def action_low_stock_send(self):
         list_report_sale = []
@@ -356,17 +358,6 @@ class ResConfigSettings(models.TransientModel):
         list_report_sale.append([0, 0, {'cliente': 'Hola'}])
         res.report_sale_products_ids = list_report_sale '''
 
-
-class low_stock_product(models.TransientModel):
-	_name='low.stock.transient'
-
-	name=fields.Char(string='Product name')
-	uom_id=fields.Char(string='Product uom')
-	stock_quantity=fields.Float(string='Quantity')
-	limit_quantity=fields.Float(string='Quantity limit')
-	stock_product_id=fields.Many2one('res.config.settings')
-	category_id=fields.Char(string='Category name')
-
 class reporte_venta(models.Model):
     #    _name = "reporte.de.venta"
     _inherit = 'sale.order'
@@ -375,7 +366,19 @@ class reporte_venta(models.Model):
                                        string='Transactions', copy=False, readonly=True)
     tag_ids = fields.Many2many('crm.tag', 'report_sale_order_tag_rel', 'report_order_id', 'tag_id', string='Tags')
     phone = fields.Char(related="partner_id.phone")
-    partner_id = fields.Many2one(string="Nombre")
+#    partner_id = fields.Many2one(string="Nombre")
     email = fields.Char(related="partner_id.email")
     invoice_fecha = fields.Date(related="invoice_ids.invoice_date", string="Fecha de factura")
     fecha_actual = fields.Date(default=datetime.today())
+
+class low_stock_product(models.TransientModel):
+    _name = 'low.stock.transient'
+
+    name = fields.Char(string='Product name')
+    uom_id = fields.Char(string='Product uom')
+    stock_quantity=fields.Float(string='Quantity')
+    limit_quantity=fields.Float(string='Quantity limit')
+    stock_product_id=fields.Many2one('res.config.settings')
+    category_id=fields.Char(string='Category name')
+    qty_cantidad = fields.Many2one('purchase.order')
+    
