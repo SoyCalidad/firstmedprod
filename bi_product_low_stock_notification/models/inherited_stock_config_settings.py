@@ -104,11 +104,12 @@ class ResConfigSettings(models.TransientModel):
                             else:
                                 name_pro = product.name
 
-                            if product.product_id.id in cantidad:
-                                qty_c = cantidad[product.product_id.id]
+                            if product.id in cantidad:
+                                qty_c = cantidad[product.id]
                             else:
                                 qty_c = 0
-
+                            _logger.info("data 1")
+                            _logger.info(qty_c)
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
                                                          'category_id': product.categ_id.name if product.categ_id else '',
@@ -118,11 +119,12 @@ class ResConfigSettings(models.TransientModel):
                     else:
                         result = self.env['product.template'].search([])
                         for product in result:
-                            if product.product_id.id in cantidad:
-                                qty_c = cantidad[product.product_id.id]
+                            if product.id in cantidad:
+                                qty_c = cantidad[product.id]
                             else:
                                 qty_c = 0
-                                
+                            _logger.info("data 2")
+                            _logger.info(qty_c)
                             if product.qty_available < res.min_quantity:
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -148,11 +150,12 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-
+                                _logger.info("data 3")
+                                _logger.info(qty_c)
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -164,11 +167,12 @@ class ResConfigSettings(models.TransientModel):
 
                         for product in result:
                             if product.qty_available < product.temp_min_quantity:
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-
+                                _logger.info("data 4")
+                                _logger.info(qty_c)
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -192,11 +196,12 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                
+                                _logger.info("data 5")
+                                _logger.info(qty_c)
                                 vals = {'name': name_pro,
                                         'uom_id': product.uom_id.name,
                                         'category_id': product.categ_id.name if product.categ_id else '',
@@ -211,10 +216,13 @@ class ResConfigSettings(models.TransientModel):
 
                         for product in result:
                             if product.qty_available < product.temp_qty_min:
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
+
+                                _logger.info("data 6")
+                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -241,10 +249,13 @@ class ResConfigSettings(models.TransientModel):
                             else:
                                 name_pro = product.name
 
-                            if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                            if product.id in cantidad:
+                                qty_c = cantidad[product.id]
                             else:
                                 qty_c = 0
+
+                            _logger.info("data 7")
+                            _logger.info(qty_c)
 
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
@@ -257,10 +268,14 @@ class ResConfigSettings(models.TransientModel):
 
                         for product in result:
                             if product.virtual_available < res.min_quantity:
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
+
+                                _logger.info("data 8")
+                                _logger.info(qty_c)
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -285,10 +300,13 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
+
+                                _logger.info("data 9")
+                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
@@ -303,10 +321,13 @@ class ResConfigSettings(models.TransientModel):
                         for product in result:
                             if product.virtual_available < product.temp_min_quantity:
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
+
+                                _logger.info("data 10")
+                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -331,11 +352,12 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                
+                                _logger.info("data 11")
+                                _logger.info(qty_c)
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -348,11 +370,12 @@ class ResConfigSettings(models.TransientModel):
                         for product in result:
                             if product.qty_available < product.temp_qty_min:
 
-                                if product.product_id.id in cantidad:
-                                    qty_c = cantidad[product.product_id.id]
+                                if product.id in cantidad:
+                                    qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                
+                                _logger.info("data 12")
+                                _logger.info(qty_c)
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
