@@ -16,6 +16,7 @@
                             <th style="border: 1px solid black;">Stock Minimo</th>
                             <th style="border: 1px solid black;">Stock Actual</th>
                             <th style="border: 1px solid black;">Cantidad Requerida</th>
+                            <th style="border: 1px solid black;">Cantidad Pedida</th>
                         </tr>
                     </thead>
                     <t t-foreach="rec_ids" t-as="o">
@@ -26,6 +27,7 @@
                             <td style="border: 1px solid black;"><span t-field="o.limit_quantity"/></td>
                             <td style="border: 1px solid black;"><span t-field="o.stock_quantity"/></td>
                             <td style="border: 1px solid black;"><span t-esc="o.limit_quantity - o.stock_quantity"/></td>
+                            <td style="border: 1px solid black;"><span t-field="o.cant_compra"/></td>
                         </tr>
                     </t>
                 </table>

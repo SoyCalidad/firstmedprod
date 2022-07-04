@@ -62,7 +62,7 @@
 	""",
 	'author':'Browseinfo',
 	'website': 'https://www.browseinfo.in',
-	'depends': ['base','sale_management','stock','sale','account'],
+	'depends': ['base','sale_management','stock','sale','account','purchase'],
 	'data': [
 	'security/ir.model.access.csv',
 	'view/product_product_view.xml',
