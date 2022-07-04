@@ -8,7 +8,9 @@ from ast import literal_eval
 from odoo import SUPERUSER_ID
 import base64
 from datetime import datetime
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class ResConfigSettings(models.TransientModel):
     _inherit = ['res.config.settings']
@@ -61,6 +63,24 @@ class ResConfigSettings(models.TransientModel):
 
         res = self.env['res.config.settings'].search(
             [], order="id desc", limit=1)
+
+        cantidad = dict()
+
+        result_qty = self.env['purchase.order'].search([])
+        for compra in result_qty:
+            if compra.state == 'purchase':
+                _logger.info("Comprado")
+                lista = compra.order_line
+                for product in lista:
+                    ''' _logger.info("--------------------->")
+                    _logger.info(product.product_id.id)
+                    _logger.info("--------------------->") '''                
+                    cantidad[product.product_id.id] = cantidad.get(product.product_id.id,0) + product.product_qty
+
+        _logger.info("--------------------->")
+        _logger.info(cantidad)
+        _logger.info("--------------------->")
+
         if res.id:
             products_dlt = [(2, dlt.id, 0)
                             for dlt in res.low_stock_products_ids]
@@ -84,20 +104,32 @@ class ResConfigSettings(models.TransientModel):
                             else:
                                 name_pro = product.name
 
+                            if product.product_id.id in cantidad:
+                                qty_c = cantidad[product.product_id.id]
+                            else:
+                                qty_c = 0
+
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
                                                          'category_id': product.categ_id.name if product.categ_id else '',
                                                          'limit_quantity': res.min_quantity,
-                                                         'stock_quantity': product.qty_available}])
+                                                         'stock_quantity': product.qty_available,
+                                                         'cant_compra':qty_c}])
                     else:
                         result = self.env['product.template'].search([])
                         for product in result:
+                            if product.product_id.id in cantidad:
+                                qty_c = cantidad[product.product_id.id]
+                            else:
+                                qty_c = 0
+                                
                             if product.qty_available < res.min_quantity:
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': res.min_quantity,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
 
                 if res.notification_products == 'fore_product':
 
@@ -116,21 +148,33 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.min_quantity,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
                     else:
                         result = self.env['product.template'].search([])
 
                         for product in result:
                             if product.qty_available < product.temp_min_quantity:
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.temp_min_quantity,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
 
                 if res.notification_products == 'reorder':
 
@@ -147,11 +191,18 @@ class ResConfigSettings(models.TransientModel):
                                     name_pro = product.name + ' - ' + name_att + '  '
                                 else:
                                     name_pro = product.name
+
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+                                
                                 vals = {'name': name_pro,
                                         'uom_id': product.uom_id.name,
                                         'category_id': product.categ_id.name if product.categ_id else '',
                                         'limit_quantity': product.qty_min,
-                                        'stock_quantity': product.qty_available}
+                                        'stock_quantity': product.qty_available,
+                                        'cant_compra':qty_c}
 
                                 products_list.append([0, 0, vals])
 
@@ -160,11 +211,17 @@ class ResConfigSettings(models.TransientModel):
 
                         for product in result:
                             if product.qty_available < product.temp_qty_min:
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.temp_qty_min,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
 
             if res.notification_base == 'fore_cast':
                 if res.notification_products == 'for_all':
@@ -184,21 +241,32 @@ class ResConfigSettings(models.TransientModel):
                             else:
                                 name_pro = product.name
 
+                            if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                            else:
+                                qty_c = 0
+
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
                                                          'category_id': product.categ_id.name if product.categ_id else '',
                                                          'limit_quantity': res.min_quantity,
-                                                         'stock_quantity': product.virtual_available}])
+                                                         'stock_quantity': product.virtual_available,
+                                                         'cant_compra':qty_c}])
                     else:
                         result = self.env['product.template'].search([])
 
                         for product in result:
                             if product.virtual_available < res.min_quantity:
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': res.min_quantity,
-                                                             'stock_quantity': product.virtual_available}])
+                                                             'stock_quantity': product.virtual_available,
+                                                             'cant_compra':qty_c}])
 
                 if res.notification_products == 'fore_product':
 
@@ -216,22 +284,36 @@ class ResConfigSettings(models.TransientModel):
                                     name_pro = product.name + ' - ' + name_att + '  '
                                 else:
                                     name_pro = product.name
+
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.min_quantity,
-                                                             'stock_quantity': product.virtual_available}])
+                                                             'stock_quantity': product.virtual_available,
+                                                             'cant_compra':qty_c}])
 
                     else:
                         result = self.env['product.template'].search([])
 
                         for product in result:
                             if product.virtual_available < product.temp_min_quantity:
+
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.temp_min_quantity,
-                                                             'stock_quantity': product.virtual_available}])
+                                                             'stock_quantity': product.virtual_available,
+                                                             'cant_compra':qty_c}])
 
                 if res.notification_products == 'reorder':
 
@@ -249,21 +331,34 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     name_pro = product.name
 
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+                                
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.qty_min,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
                     else:
                         result = self.env['product.template'].search([])
 
                         for product in result:
                             if product.qty_available < product.temp_qty_min:
+
+                                if product.product_id.id in cantidad:
+                                    qty_c = cantidad[product.product_id.id]
+                                else:
+                                    qty_c = 0
+                                
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
                                                              'limit_quantity': product.temp_qty_min,
-                                                             'stock_quantity': product.qty_available}])
+                                                             'stock_quantity': product.qty_available,
+                                                             'cant_compra':qty_c}])
 
             res.low_stock_products_ids = products_list
             return
@@ -356,27 +451,37 @@ class ResConfigSettings(models.TransientModel):
         list_report_sale.append([0, 0, {'cliente': 'Hola'}])
         res.report_sale_products_ids = list_report_sale '''
 
-class reporte_venta(models.Model):
-    #    _name = "reporte.de.venta"
-    _inherit = 'sale.order'
-    cliente2 = fields.Char(string='Nombre Cliente')
-    transaction_ids = fields.Many2many('payment.transaction', 'report_sale_order_transaction_rel', 'report_sale_order_id', 'transaction_id',
-                                       string='Transactions', copy=False, readonly=True)
-    tag_ids = fields.Many2many('crm.tag', 'report_sale_order_tag_rel', 'report_order_id', 'tag_id', string='Tags')
-    phone = fields.Char(related="partner_id.phone")
-#    partner_id = fields.Many2one(string="Nombre")
-    email = fields.Char(related="partner_id.email")
-    invoice_fecha = fields.Date(related="invoice_ids.invoice_date", string="Fecha de factura")
-    fecha_actual = fields.Date(default=datetime.today())
 
 class low_stock_product(models.TransientModel):
     _name = 'low.stock.transient'
 
     name = fields.Char(string='Product name')
     uom_id = fields.Char(string='Product uom')
-    stock_quantity=fields.Float(string='Quantity')
-    limit_quantity=fields.Float(string='Quantity limit')
-    stock_product_id=fields.Many2one('res.config.settings')
-    category_id=fields.Char(string='Category name')
-    qty_cantidad = fields.Many2one('purchase.order')
-    
+    stock_quantity = fields.Float(string='Quantity')
+    limit_quantity = fields.Float(string='Quantity limit')
+    stock_product_id = fields.Many2one('res.config.settings')
+    category_id = fields.Char(string='Category name')
+    cant_compra = fields.Char(string="Cantidad comprada")
+
+''' class edit_produc_product(models.Model):
+    _inherit = 'product.product'
+    qty_cantidad_p_p = fields.Many2one('purchase.order')
+
+class edit_produc_template(models.Model):
+    _inherit = 'product.template'
+    qty_compra = fields.Float(string="Cantidad comprada", default=0) '''
+
+class reporte_venta(models.Model):
+    #    _name = "reporte.de.venta"
+    _inherit = 'sale.order'
+    cliente2 = fields.Char(string='Nombre Cliente')
+    transaction_ids = fields.Many2many('payment.transaction', 'report_sale_order_transaction_rel', 'report_sale_order_id', 'transaction_id',
+                                       string='Transactions', copy=False, readonly=True)
+    tag_ids = fields.Many2many(
+        'crm.tag', 'report_sale_order_tag_rel', 'report_order_id', 'tag_id', string='Tags')
+    phone = fields.Char(related="partner_id.phone")
+#    partner_id = fields.Many2one(string="Nombre")
+    email = fields.Char(related="partner_id.email")
+    invoice_fecha = fields.Date(
+        related="invoice_ids.invoice_date", string="Fecha de factura")
+    fecha_actual = fields.Date(default=datetime.today())

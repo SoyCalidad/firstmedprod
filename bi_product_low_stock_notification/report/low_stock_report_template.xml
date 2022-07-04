@@ -27,6 +27,7 @@
                             <td style="border: 1px solid black;"><span t-field="o.limit_quantity"/></td>
                             <td style="border: 1px solid black;"><span t-field="o.stock_quantity"/></td>
                             <td style="border: 1px solid black;"><span t-esc="o.limit_quantity - o.stock_quantity"/></td>
+                            <td style="border: 1px solid black;"><span t-field="o.cant_compra"/></td>
                         </tr>
                     </t>
                 </table>
