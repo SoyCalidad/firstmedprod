@@ -65,7 +65,7 @@ class ResConfigSettings(models.TransientModel):
             [], order="id desc", limit=1)
 
         cantidad = dict()
-
+        qty_c = 0
         result_qty = self.env['purchase.order'].search([])
         for compra in result_qty:
             if compra.state == 'purchase':
