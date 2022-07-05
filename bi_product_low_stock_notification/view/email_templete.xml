@@ -86,6 +86,7 @@
             <th>Cantidad de stock mínimo</th>
             <th>Cantidad de producto</th>
             <th>Cantidad requerida</th>
+            <th>Cantidad Pedida</th>
           </tr>
            %for product in object.low_stock_products_ids:
           <tr>
@@ -95,6 +96,7 @@
           <td>${"{:.2f}".format(product.limit_quantity)}</td>
           <td>${"{:.2f}".format(product.stock_quantity)}</td>
           <td>${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
+          <td>${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>

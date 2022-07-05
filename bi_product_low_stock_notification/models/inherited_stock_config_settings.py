@@ -108,8 +108,7 @@ class ResConfigSettings(models.TransientModel):
                                 qty_c = cantidad[product.id]
                             else:
                                 qty_c = 0
-                            _logger.info("data 1")
-                            _logger.info(qty_c)
+
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
                                                          'category_id': product.categ_id.name if product.categ_id else '',
@@ -123,8 +122,7 @@ class ResConfigSettings(models.TransientModel):
                                 qty_c = cantidad[product.id]
                             else:
                                 qty_c = 0
-                            _logger.info("data 2")
-                            _logger.info(qty_c)
+
                             if product.qty_available < res.min_quantity:
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -154,8 +152,7 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                _logger.info("data 3")
-                                _logger.info(qty_c)
+
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -171,8 +168,7 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                _logger.info("data 4")
-                                _logger.info(qty_c)
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -200,8 +196,7 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                _logger.info("data 5")
-                                _logger.info(qty_c)
+                                
                                 vals = {'name': name_pro,
                                         'uom_id': product.uom_id.name,
                                         'category_id': product.categ_id.name if product.categ_id else '',
@@ -220,9 +215,6 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-
-                                _logger.info("data 6")
-                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -254,9 +246,6 @@ class ResConfigSettings(models.TransientModel):
                             else:
                                 qty_c = 0
 
-                            _logger.info("data 7")
-                            _logger.info(qty_c)
-
                             products_list.append([0, 0, {'name': name_pro,
                                                          'uom_id': product.uom_id.name,
                                                          'category_id': product.categ_id.name if product.categ_id else '',
@@ -272,9 +261,6 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-
-                                _logger.info("data 8")
-                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -305,9 +291,6 @@ class ResConfigSettings(models.TransientModel):
                                 else:
                                     qty_c = 0
 
-                                _logger.info("data 9")
-                                _logger.info(qty_c)
-
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -325,9 +308,6 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-
-                                _logger.info("data 10")
-                                _logger.info(qty_c)
 
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
@@ -356,8 +336,6 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                _logger.info("data 11")
-                                _logger.info(qty_c)
                                 products_list.append([0, 0, {'name': name_pro,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -374,8 +352,7 @@ class ResConfigSettings(models.TransientModel):
                                     qty_c = cantidad[product.id]
                                 else:
                                     qty_c = 0
-                                _logger.info("data 12")
-                                _logger.info(qty_c)
+
                                 products_list.append([0, 0, {'name': product.name,
                                                              'uom_id': product.uom_id.name,
                                                              'category_id': product.categ_id.name if product.categ_id else '',
@@ -477,6 +454,7 @@ class ResConfigSettings(models.TransientModel):
 
 class low_stock_product(models.TransientModel):
     _name = 'low.stock.transient'
+    _order = 'name asc'
 
     name = fields.Char(string='Product name')
     uom_id = fields.Char(string='Product uom')
@@ -484,7 +462,8 @@ class low_stock_product(models.TransientModel):
     limit_quantity = fields.Float(string='Quantity limit')
     stock_product_id = fields.Many2one('res.config.settings')
     category_id = fields.Char(string='Category name')
-    cant_compra = fields.Char(string="Cantidad comprada")
+    cant_compra = fields.Float(string="Cantidad comprada")
+    
 
 ''' class edit_produc_product(models.Model):
     _inherit = 'product.product'
@@ -494,12 +473,13 @@ class edit_produc_template(models.Model):
     _inherit = 'product.template'
     qty_compra = fields.Float(string="Cantidad comprada", default=0) '''
 
+
 class reporte_venta(models.Model):
     #    _name = "reporte.de.venta"
     _inherit = 'sale.order'
     cliente2 = fields.Char(string='Nombre Cliente')
     transaction_ids = fields.Many2many('payment.transaction', 'report_sale_order_transaction_rel', 'report_sale_order_id', 'transaction_id',
-                                       string='Transactions', copy=False, readonly=True)
+                                        string='Transactions', copy=False, readonly=True)
     tag_ids = fields.Many2many(
         'crm.tag', 'report_sale_order_tag_rel', 'report_order_id', 'tag_id', string='Tags')
     phone = fields.Char(related="partner_id.phone")
