@@ -26,6 +26,7 @@
             <th>Und. Med.</th>
             <th>Cantidad de producto</th>
             <th>Cantidad requerida</th>
+            <th>Cantidad Pedida</th>
           </tr>
         
         %for product in object.low_stock_products_ids:
@@ -37,6 +38,7 @@
           <td>${product.uom_id}</td>
           <td>${"{:.2f}".format(product.stock_quantity)}</td>
           <td>${"{:.2f}".format(object.min_quantity - product.stock_quantity)}</td>
+          <td>${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>
@@ -57,6 +59,7 @@
             <th>Cantidad mínima individual</th>
             <th>Cantidad de producto</th>
             <th>Cantidad requerida</th>
+            <th>Cantidad Pedida</th>
           </tr>
            %for product in object.low_stock_products_ids:
           <tr>
@@ -66,6 +69,7 @@
           <td>${"{:.2f}".format(product.limit_quantity)}</td>
           <td>${"{:.2f}".format(product.stock_quantity)}</td>
           <td>${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
+          <td>${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>
