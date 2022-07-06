@@ -36,9 +36,9 @@
           <td>${product.name}</td>
           <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
-          <td>${"{:.2f}".format(product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(object.min_quantity - product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(product.cant_compra)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(object.min_quantity - product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>
@@ -66,10 +66,10 @@
           <td>${product.name}</td>
           <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
-          <td>${"{:.2f}".format(product.limit_quantity)}</td>
-          <td>${"{:.2f}".format(product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(product.cant_compra)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.limit_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>
@@ -97,10 +97,10 @@
           <td>${product.name}</td>
           <td>${product.category_id}</td>
           <td>${product.uom_id}</td>
-          <td>${"{:.2f}".format(product.limit_quantity)}</td>
-          <td>${"{:.2f}".format(product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
-          <td>${"{:.2f}".format(product.cant_compra)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.limit_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.limit_quantity - product.stock_quantity)}</td>
+          <td style="text-align:right;">${"{:.2f}".format(product.cant_compra)}</td>
         </tr>
         %endfor
       </table>

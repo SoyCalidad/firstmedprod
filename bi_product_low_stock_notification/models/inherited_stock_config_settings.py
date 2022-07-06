@@ -454,7 +454,7 @@ class ResConfigSettings(models.TransientModel):
 
 class low_stock_product(models.TransientModel):
     _name = 'low.stock.transient'
-    _order = 'name asc'
+    ''' _order = 'name asc' '''
 
     name = fields.Char(string='Product name')
     uom_id = fields.Char(string='Product uom')
