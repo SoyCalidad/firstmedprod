@@ -6,4 +6,14 @@
             model="sale.order"
             report_type="qweb-pdf"
             name="bi_product_low_stock_notification.reporte_venta"/>
+
+    <record id="bi_product_low_stock_notification.action_reporte_venta_xlsx" model="ir.actions.report">
+        <field name="name">Detalle de Reporte Excel</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_file">Reporte de ventas</field>
+        <field name="report_name">bi_product_low_stock_notification.reporte_venta_xlsx</field>
+        <!-- <field name="print_report_name">Reporte de ventas</field> -->
+    </record>
+
 </odoo>
