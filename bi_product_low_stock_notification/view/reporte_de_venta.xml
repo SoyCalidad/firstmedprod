@@ -20,14 +20,8 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
-            <!-- <filter name="customer" position="after">
-                <filter name="veinticinco_dias" string="ultimo 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)).strftime('%d/%m/%Y'))]"/>
-            </filter>
-            <filter name="customer" position="after">
-                <filter name="quince_dias" string="ultimo 25 días" domain="[('invoice_fecha','&gt;',(context_today()+datetime.timedelta(days=-25)).strftime('%d/%m/%Y'))]"/>
-            </filter> -->
             <xpath expr="//search" position="inside">
-                <filter name="veinticinco_dias" string="ultimo 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)).strftime('%d/%m/%Y'))]"/>
+                <filter name="days_25_filter" string="Últimos 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)))]"/>
             </xpath>
         </field>
     </record>
