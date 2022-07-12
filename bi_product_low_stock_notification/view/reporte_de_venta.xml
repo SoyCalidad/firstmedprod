@@ -21,7 +21,7 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//search" position="inside">
-                <filter name="days_25_filter" string="Últimos 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)))]"/>
+                <filter name="days_25_filter" string="Últimos 25 días" domain="[('invoice_fecha','>',(context_today()+datetime.timedelta(days=-25)).strftime('%Y-%m-%d'))]"/>
             </xpath>
         </field>
     </record>
