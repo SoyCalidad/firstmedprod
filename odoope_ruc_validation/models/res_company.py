@@ -21,10 +21,11 @@ class ResCompany(models.Model):
     l10n_pe_ruc_validation = fields.Boolean(string="RUC Validation")
     l10n_pe_dni_validation = fields.Boolean(string="DNI Validation")
     l10n_pe_api_dni_connection = fields.Selection([
+        ('sunat','SUNAT'),
         ('jne','JNE'),
         ('facturacion_electronica','Facturacion Electronica DNI'),
         ('free_api','Free Api')
-    ], string='Api DNI Connection', default='jne')
+    ], string='Api DNI Connection', default='sunat')
     l10n_pe_api_ruc_connection = fields.Selection([
         ('sunat','Sunat'),
         ('sunat_multi','Sunat Multi')
