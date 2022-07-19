@@ -248,7 +248,25 @@ class ResPartner(models.Model):
         except Exception :
             self.alert_warning_vat = True
             data = False 
-        return data 
+        return data
+
+    @api.model
+    def sunat_dni_api(self, dni):
+        '''Consults DNI using SUNAT API'''
+        sunat_api_url = 'https://ww1.sunat.gob.pe/ol-ti-itatencionf5030/registro/solicitante?tipDocu=1&numDocu=%s'
+        data = {}
+        try:
+            sunat_api_request = requests.post(sunat_api_url % dni, timeout=(15))
+            result = sunat_api_request.json()
+            name = result.get('nombreSoli') + " " + \
+                result.get('apePatSoli') + " " + result.get('apeMatSoli')
+            data['nombre'] = name
+    
+        except Exception as e:
+            self.alert_warning_vat = True
+            data = False
+            print(e)
+        return data
 
     @api.model     
     def free_api_connection(self, dni):
@@ -296,6 +314,8 @@ class ResPartner(models.Model):
             data = self.facturacion_electronica_dni_connection(dni)
         elif company.l10n_pe_api_dni_connection == 'free_api':
             data = self.free_api_connection(dni)
+        elif company.l10n_pe_api_dni_connection == 'sunat':
+            data = self.sunat_dni_api(dni)
         else:
             data = False   
         return data   
